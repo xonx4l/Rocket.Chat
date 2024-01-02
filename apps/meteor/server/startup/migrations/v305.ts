@@ -6,7 +6,7 @@ import { addMigration } from '../../lib/migrations';
 
 addMigration({
 	version: 305,
-	name: 'Copy roles from add-team-channel permission to new create-team-channel and create-team-group permissions',
+	name: 'Copy roles from add-team-channel permission to new create-team-channel, create-team-group and move-room-to-team permissions',
 	async up() {
 		// Calling upsertPermissions on purpose so that the new permissions are added before the migration runs
 		await upsertPermissions();
@@ -17,9 +17,11 @@ addMigration({
 
 		if (addTeamChannelPermission) {
 			await Permissions.updateMany(
-				{ _id: { $in: ['create-team-channel', 'create-team-group'] } },
+				{ _id: { $in: ['create-team-channel', 'create-team-group', 'move-room-to-team'] } },
 				{ $set: { roles: addTeamChannelPermission.roles } },
 			);
+
+			await Permissions.deleteOne({ _id: 'add-team-channel' });
 		}
 	},
 });

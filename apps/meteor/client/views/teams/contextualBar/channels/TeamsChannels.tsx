@@ -56,7 +56,7 @@ const TeamsChannels = () => {
 		setText(event.currentTarget.value);
 	}, []);
 
-	const canAddExistingRoomToTeam = usePermission('add-team-channel', room._id);
+	const canAddExistingRoomToTeam = usePermission('move-room-to-team', room._id);
 	const canCreateRoomInTeam = useAtLeastOnePermission(['create-team-channel', 'create-team-group'], room._id);
 	const addExisting = useReactModal(AddExistingModal, teamId, reload);
 	const createNew = useReactModal(CreateChannelWithData, teamId, reload);
