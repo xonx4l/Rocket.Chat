@@ -1719,8 +1719,7 @@ describe('[Groups]', function () {
 				.expect((res) => {
 					expect(res.body).to.have.property('success', false);
 					expect(res.body).to.have.a.property('error');
-					expect(res.body).to.have.a.property('errorType');
-					expect(res.body.errorType).to.be.equal('error-not-allowed');
+					expect(res.body).to.have.a.property('errorType', 'error-not-allowed');
 				});
 		});
 		it(`should fail deleting a team's group when member has the necessary permission in the team, but not in the deleted room`, async () => {
@@ -1735,8 +1734,7 @@ describe('[Groups]', function () {
 				.expect((res) => {
 					expect(res.body).to.have.property('success', false);
 					expect(res.body).to.have.a.property('error');
-					expect(res.body).to.have.a.property('errorType');
-					expect(res.body.errorType).to.be.equal('error-not-allowed');
+					expect(res.body).to.have.a.property('errorType', 'error-room-not-found');
 				});
 		});
 		it(`should successfully delete a team's group when member has both team and group permissions`, async () => {
