@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { twoFactorRequired } from '../../../2fa/server/twoFactorRequired';
 import { saveUser } from '../functions/saveUser';
+import type { ISaveUserDataParams } from '../functions/saveUser';
 
 declare module '@rocket.chat/ui-contexts' {
 	// eslint-disable-next-line @typescript-eslint/naming-convention
@@ -22,6 +23,6 @@ Meteor.methods<ServerMethods>({
 			});
 		}
 
-		return saveUser(Meteor.userId(), userData);
+		return saveUser(Meteor.userId(), userData as ISaveUserDataParams);
 	}),
 });
