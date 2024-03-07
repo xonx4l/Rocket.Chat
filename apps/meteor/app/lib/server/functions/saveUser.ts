@@ -288,7 +288,6 @@ const saveNewUser = async function (userData: ICreateUserParams, sendPassword: b
 	updateUser.$set = {
 		roles,
 		...(typeof userData.name !== 'undefined' && { name: userData.name }),
-		settings: userData.settings || {},
 	};
 
 	if (typeof userData.requirePasswordChange !== 'undefined') {
@@ -403,13 +402,6 @@ export const saveUser = async function (userId: IUser['_id'], userData: ISaveUse
 
 	if (userData.roles) {
 		updateUser.$set.roles = userData.roles;
-	}
-	if (userData.settings) {
-		updateUser.$set['settings.preferences'] = userData.settings.preferences;
-	}
-
-	if (userData.language) {
-		updateUser.$set.language = userData.language;
 	}
 
 	if (typeof userData.requirePasswordChange !== 'undefined') {
