@@ -34,6 +34,14 @@ export type UnauthorizedResult<T> = {
 	};
 };
 
+export type ForbiddenResult<T> = {
+	statusCode: 403;
+	body: {
+		success: false;
+		error: T | 'forbidden';
+	};
+};
+
 export type InternalError<T> = { statusCode: 500; body: { error: T | 'Internal error occured'; success: false } };
 
 export type NotFoundResult = {
@@ -171,6 +179,7 @@ export type ResultFor<TMethod extends Method, TPathPattern extends PathPattern> 
 	| SuccessResult<OperationResult<TMethod, TPathPattern>>
 	| FailureResult<unknown, unknown, unknown, unknown>
 	| UnauthorizedResult<unknown>
+	| ForbiddenResult<unknown>
 	| NotFoundResult
 	| {
 			statusCode: number;

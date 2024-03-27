@@ -25,6 +25,7 @@ import type { PermissionsPayload } from './api.helpers';
 import { checkPermissionsForInvocation, checkPermissions } from './api.helpers';
 import type {
 	FailureResult,
+	ForbiddenResult,
 	InternalError,
 	NotFoundResult,
 	Operations,
@@ -294,12 +295,22 @@ export class APIClass<TBasePath extends string = ''> extends Restivus {
 		};
 	}
 
-	public unauthorized<T>(msg?: T): UnauthorizedResult<T> {
+	public unauthorized<T extends string>(msg?: T): UnauthorizedResult<T> {
 		return {
 			statusCode: 403,
 			body: {
 				success: false,
 				error: msg || 'unauthorized',
+			},
+		};
+	}
+
+	public forbidden<T>(msg?: T): ForbiddenResult<T> {
+		return {
+			statusCode: 403,
+			body: {
+				success: false,
+				error: msg || 'forbidden',
 			},
 		};
 	}
