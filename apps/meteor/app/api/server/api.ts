@@ -297,7 +297,7 @@ export class APIClass<TBasePath extends string = ''> extends Restivus {
 
 	public unauthorized<T extends string>(msg?: T): UnauthorizedResult<T> {
 		return {
-			statusCode: 403,
+			statusCode: 401,
 			body: {
 				success: false,
 				error: msg || 'unauthorized',
