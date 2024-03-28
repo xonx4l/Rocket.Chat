@@ -1117,7 +1117,7 @@ describe('[Groups]', function () {
 	});
 
 	describe('/groups.files', async () => {
-		await testFileUploads('groups.files', group);
+		await testFileUploads('groups.files', 'p');
 	});
 
 	describe('/groups.listAll', () => {
@@ -1649,7 +1649,7 @@ describe('[Groups]', function () {
 			const teamGroupResponse = await createRoom({
 				name: `group.test.${Date.now()}`,
 				type: 'p',
-				teamId,
+				extraData: { teamId },
 				credentials: invitedUserCredentials,
 			});
 			testTeamGroup = teamGroupResponse.body.group;
@@ -1669,7 +1669,7 @@ describe('[Groups]', function () {
 			const teamModeratorGroupResponse = await createRoom({
 				name: `group.test.moderator.${Date.now()}`,
 				type: 'p',
-				teamId,
+				extraData: { teamId },
 				credentials: moderatorUserCredentials,
 			});
 			testModeratorTeamGroup = teamModeratorGroupResponse.body.group;
