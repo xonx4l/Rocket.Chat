@@ -296,6 +296,8 @@
   "add-livechat-department-agents_description": "Uprawnienie do dodawania agentów omnichannel do działów",
   "add-oauth-service": "Dodaj usługę Oauth",
   "add-oauth-service_description": "Uprawnienie do dodawania nowej usługi Oauth",
+  "add-user": "Dodaj użytkownika",
+  "add-user_description": "Uprawnienie do dodawania nowych użytkowników do serwera na ekranie użytkowników",
   "add-user-to-any-c-room": "Dodaj użytkownika do dowolnego publicznego kanału Channel",
   "add-user-to-any-c-room_description": "Uprawnienie do dodawania użytkownika do dowolnego publicznego kanału",
   "add-user-to-any-p-room": "Dodaj użytkownika do dowolnego prywatnego kanału Channel",
