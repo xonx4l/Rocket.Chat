@@ -1,7 +1,5 @@
 import {
-	Box,
 	Field,
-	FieldLabel,
 	FieldRow,
 	TextInput,
 	ToggleSwitch,
@@ -10,6 +8,9 @@ import {
 	InputBox,
 	TextAreaInput,
 	NumberInput,
+	Select,
+	MultiSelect,
+	FieldHint,
 } from '@rocket.chat/fuselage';
 import { useUniqueId } from '@rocket.chat/fuselage-hooks';
 import { useTranslation } from '@rocket.chat/ui-contexts';
@@ -17,8 +18,13 @@ import type { ChangeEvent } from 'react';
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { useHasLicenseModule } from '../../../../ee/client/hooks/useHasLicenseModule';
+import MarkdownText from '../../../components/MarkdownText';
+import FieldLabel from './AppearanceFieldLabel';
+
 const AppearanceForm = () => {
 	const t = useTranslation();
+	const isEnterprise = useHasLicenseModule('livechat-enterprise');
 
 	const { control, watch } = useFormContext();
 	const { Livechat_enable_message_character_limit } = watch();
@@ -42,9 +48,101 @@ const AppearanceForm = () => {
 	const livechatRegistrationFormMessageField = useUniqueId();
 	const livechatConversationFinishedMessageField = useUniqueId();
 	const livechatConversationFinishedTextField = useUniqueId();
+	const livechatHideWatermarkField = useUniqueId();
+	const livechatWidgetPositionField = useUniqueId();
+	const livechatBackgroundField = useUniqueId();
+	const livechatHideSystemMessagesField = useUniqueId();
 
 	return (
 		<Accordion>
+			<Accordion.Item defaultExpanded title={t('General')}>
+				<FieldGroup>
+					<Field>
+						<FieldRow>
+							<FieldLabel premium htmlFor={livechatHideWatermarkField}>
+								{t('Livechat_hide_watermark')}
+							</FieldLabel>
+							<Controller
+								name='Livechat_hide_watermark'
+								control={control}
+								render={({ field: { value, ...field } }) => (
+									<ToggleSwitch id={livechatHideWatermarkField} {...field} checked={value} disabled={!isEnterprise} />
+								)}
+							/>
+						</FieldRow>
+					</Field>
+
+					<Field>
+						<FieldLabel premium htmlFor={livechatBackgroundField}>
+							{t('Livechat_background')}
+						</FieldLabel>
+						<FieldRow>
+							<Controller
+								name='Livechat_background'
+								control={control}
+								render={({ field: { value, ...field } }) => (
+									<TextInput {...field} id={livechatBackgroundField} value={value} disabled={!isEnterprise} />
+								)}
+							/>
+						</FieldRow>
+						<FieldHint>
+							<MarkdownText variant='inline' preserveHtml content={t('Livechat_background_description')} />
+						</FieldHint>
+					</Field>
+
+					<Field>
+						<FieldLabel premium htmlFor={livechatWidgetPositionField}>
+							{t('Livechat_widget_position_on_the_screen')}
+						</FieldLabel>
+						<FieldRow>
+							<Controller
+								name='Livechat_widget_position'
+								control={control}
+								render={({ field: { value, ...field } }) => (
+									<Select
+										{...field}
+										id={livechatWidgetPositionField}
+										value={value}
+										disabled={!isEnterprise}
+										options={[
+											['left', t('Left')],
+											['right', t('Right')],
+										]}
+									/>
+								)}
+							/>
+						</FieldRow>
+					</Field>
+
+					<Field>
+						<FieldLabel premium htmlFor={livechatHideSystemMessagesField}>
+							{t('Livechat_hide_system_messages')}
+						</FieldLabel>
+						<FieldRow>
+							<Controller
+								name='Livechat_hide_system_messages'
+								control={control}
+								render={({ field: { value, ...field } }) => (
+									<MultiSelect
+										{...field}
+										id={livechatHideSystemMessagesField}
+										value={value}
+										disabled={!isEnterprise}
+										options={[
+											['uj', t('Message_HideType_uj')],
+											['ul', t('Message_HideType_ul')],
+											['livechat-close', t('Message_HideType_livechat_closed')],
+											['livechat-started', t('Message_HideType_livechat_started')],
+											['livechat_transfer_history', t('Message_HideType_livechat_transfer_history')],
+										]}
+									/>
+								)}
+							/>
+						</FieldRow>
+					</Field>
+				</FieldGroup>
+			</Accordion.Item>
+
 			<Accordion.Item defaultExpanded title={t('Livechat_online')}>
 				<FieldGroup>
 					<Field>
@@ -68,18 +166,16 @@ const AppearanceForm = () => {
 						</FieldRow>
 					</Field>
 					<Field>
-						<Box display='flex' flexDirection='row'>
+						<FieldRow>
 							<FieldLabel htmlFor={livechatEnableMessageCharacterLimit}>{t('Livechat_enable_message_character_limit')}</FieldLabel>
-							<FieldRow>
-								<Controller
-									name='Livechat_enable_message_character_limit'
-									control={control}
-									render={({ field: { value, ...field } }) => (
-										<ToggleSwitch id={livechatEnableMessageCharacterLimit} {...field} checked={value} />
-									)}
-								/>
-							</FieldRow>
-						</Box>
+							<Controller
+								name='Livechat_enable_message_character_limit'
+								control={control}
+								render={({ field: { value, ...field } }) => (
+									<ToggleSwitch id={livechatEnableMessageCharacterLimit} {...field} checked={value} />
+								)}
+							/>
+						</FieldRow>
 					</Field>
 					<Field>
 						<FieldLabel htmlFor={livechatMessageCharacterLimit}>{t('Message_Characther_Limit')}</FieldLabel>
@@ -100,44 +196,39 @@ const AppearanceForm = () => {
 						</FieldRow>
 					</Field>
 					<Field>
-						<Box display='flex' flexDirection='row'>
+						<FieldRow>
 							<FieldLabel htmlFor={livechatShowAgentInfo}>{t('Show_agent_info')}</FieldLabel>
-							<FieldRow>
-								<Controller
-									name='Livechat_show_agent_info'
-									control={control}
-									render={({ field: { value, ...field } }) => <ToggleSwitch id={livechatShowAgentInfo} {...field} checked={value} />}
-								/>
-							</FieldRow>
-						</Box>
+							<Controller
+								name='Livechat_show_agent_info'
+								control={control}
+								render={({ field: { value, ...field } }) => <ToggleSwitch id={livechatShowAgentInfo} {...field} checked={value} />}
+							/>
+						</FieldRow>
 					</Field>
 					<Field>
-						<Box display='flex' flexDirection='row'>
+						<FieldRow>
 							<FieldLabel htmlFor={livechatShowAgentEmail}>{t('Show_agent_email')}</FieldLabel>
-							<FieldRow>
-								<Controller
-									name='Livechat_show_agent_email'
-									control={control}
-									render={({ field: { value, ...field } }) => <ToggleSwitch id={livechatShowAgentEmail} {...field} checked={value} />}
-								/>
-							</FieldRow>
-						</Box>
+							<Controller
+								name='Livechat_show_agent_email'
+								control={control}
+								render={({ field: { value, ...field } }) => <ToggleSwitch id={livechatShowAgentEmail} {...field} checked={value} />}
+							/>
+						</FieldRow>
 					</Field>
 				</FieldGroup>
 			</Accordion.Item>
+
 			<Accordion.Item title={t('Livechat_offline')}>
 				<FieldGroup>
 					<Field>
-						<Box display='flex' flexDirection='row'>
+						<FieldRow>
 							<FieldLabel htmlFor={livechatDisplayOfflineForm}>{t('Display_offline_form')}</FieldLabel>
-							<FieldRow>
-								<Controller
-									name='Livechat_display_offline_form'
-									control={control}
-									render={({ field: { value, ...field } }) => <ToggleSwitch id={livechatDisplayOfflineForm} {...field} checked={value} />}
-								/>
-							</FieldRow>
-						</Box>
+							<Controller
+								name='Livechat_display_offline_form'
+								control={control}
+								render={({ field: { value, ...field } }) => <ToggleSwitch id={livechatDisplayOfflineForm} {...field} checked={value} />}
+							/>
+						</FieldRow>
 					</Field>
 					<Field>
 						<FieldLabel htmlFor={livechatOfflineFormUnavailableField}>{t('Offline_form_unavailable_message')}</FieldLabel>
@@ -201,47 +292,42 @@ const AppearanceForm = () => {
 					</Field>
 				</FieldGroup>
 			</Accordion.Item>
+
 			<Accordion.Item title={t('Livechat_registration_form')}>
 				<FieldGroup>
 					<Field>
-						<Box display='flex' flexDirection='row'>
+						<FieldRow>
 							<FieldLabel htmlFor={livechatRegistrationForm}>{t('Enabled')}</FieldLabel>
-							<FieldRow>
-								<Controller
-									name='Livechat_registration_form'
-									control={control}
-									render={({ field: { value, ...field } }) => <ToggleSwitch id={livechatRegistrationForm} {...field} checked={value} />}
-								/>
-							</FieldRow>
-						</Box>
+							<Controller
+								name='Livechat_registration_form'
+								control={control}
+								render={({ field: { value, ...field } }) => <ToggleSwitch id={livechatRegistrationForm} {...field} checked={value} />}
+							/>
+						</FieldRow>
 					</Field>
 					<Field>
-						<Box display='flex' flexDirection='row'>
+						<FieldRow>
 							<FieldLabel htmlFor={livechatNameFieldRegistrationForm}>{t('Show_name_field')}</FieldLabel>
-							<FieldRow>
-								<Controller
-									name='Livechat_name_field_registration_form'
-									control={control}
-									render={({ field: { value, ...field } }) => (
-										<ToggleSwitch id={livechatNameFieldRegistrationForm} {...field} checked={value} />
-									)}
-								/>
-							</FieldRow>
-						</Box>
+							<Controller
+								name='Livechat_name_field_registration_form'
+								control={control}
+								render={({ field: { value, ...field } }) => (
+									<ToggleSwitch id={livechatNameFieldRegistrationForm} {...field} checked={value} />
+								)}
+							/>
+						</FieldRow>
 					</Field>
 					<Field>
-						<Box display='flex' flexDirection='row'>
+						<FieldRow>
 							<FieldLabel htmlFor={livechatEmailFieldRegistrationForm}>{t('Show_email_field')}</FieldLabel>
-							<FieldRow>
-								<Controller
-									name='Livechat_email_field_registration_form'
-									control={control}
-									render={({ field: { value, ...field } }) => (
-										<ToggleSwitch id={livechatEmailFieldRegistrationForm} {...field} checked={value} />
-									)}
-								/>
-							</FieldRow>
-						</Box>
+							<Controller
+								name='Livechat_email_field_registration_form'
+								control={control}
+								render={({ field: { value, ...field } }) => (
+									<ToggleSwitch id={livechatEmailFieldRegistrationForm} {...field} checked={value} />
+								)}
+							/>
+						</FieldRow>
 					</Field>
 					<Field>
 						<FieldLabel htmlFor={livechatRegistrationFormMessageField}>{t('Livechat_registration_form_message')}</FieldLabel>
@@ -257,6 +343,7 @@ const AppearanceForm = () => {
 					</Field>
 				</FieldGroup>
 			</Accordion.Item>
+
 			<Accordion.Item title={t('Conversation_finished')}>
 				<FieldGroup>
 					<Field>

@@ -50,6 +50,7 @@ const RoomMessageContent = ({ message, unread, all, mention, searchText }: RoomM
 				<>
 					{(!encrypted || normalizedMessage.e2e === 'done') && (
 						<MessageContentBody
+							id={`${message._id}-content`}
 							md={normalizedMessage.md}
 							mentions={normalizedMessage.mentions}
 							channels={normalizedMessage.channels}
@@ -64,7 +65,7 @@ const RoomMessageContent = ({ message, unread, all, mention, searchText }: RoomM
 				<UiKitMessageBlock rid={normalizedMessage.rid} mid={normalizedMessage._id} blocks={normalizedMessage.blocks} />
 			)}
 
-			{!!normalizedMessage?.attachments?.length && <Attachments attachments={normalizedMessage.attachments} />}
+			{!!normalizedMessage?.attachments?.length && <Attachments id={message.files?.[0]._id} attachments={normalizedMessage.attachments} />}
 
 			{oembedEnabled && !!normalizedMessage.urls?.length && <UrlPreviews urls={normalizedMessage.urls} />}
 

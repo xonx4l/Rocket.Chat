@@ -1,4 +1,5 @@
-import { Message, api } from '@rocket.chat/core-services';
+import { Apps, AppEvents } from '@rocket.chat/apps';
+import { Message } from '@rocket.chat/core-services';
 import { isQuoteAttachment, isRegisterUser } from '@rocket.chat/core-typings';
 import type { IMessage, MessageAttachment, MessageQuoteAttachment } from '@rocket.chat/core-typings';
 import { Messages, Rooms, Subscriptions, Users, ReadReceipts } from '@rocket.chat/models';
@@ -6,10 +7,8 @@ import type { ServerMethods } from '@rocket.chat/ui-contexts';
 import { check } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
 
-import { Apps, AppEvents } from '../../../ee/server/apps/orchestrator';
-import { callbacks } from '../../../lib/callbacks';
 import { isTruthy } from '../../../lib/isTruthy';
-import { broadcastMessageSentEvent } from '../../../server/modules/watchers/lib/messages';
+import { broadcastMessageFromData } from '../../../server/modules/watchers/lib/messages';
 import { canAccessRoomAsync, roomAccessAttributes } from '../../authorization/server';
 import { hasPermissionAsync } from '../../authorization/server/functions/hasPermission';
 import { isTheLastMessage } from '../../lib/server/functions/isTheLastMessage';
@@ -109,8 +108,6 @@ Meteor.methods<ServerMethods>({
 			username: me.username,
 		};
 
-		originalMessage = await callbacks.run('beforeSaveMessage', originalMessage);
-
 		originalMessage = await Message.beforeSave({ message: originalMessage, room, user: me });
 
 		await Messages.setPinnedByIdAndUserId(originalMessage._id, originalMessage.pinnedBy, originalMessage.pinned);
@@ -132,7 +129,7 @@ Meteor.methods<ServerMethods>({
 		}
 
 		// App IPostMessagePinned event hook
-		await Apps.triggerEvent(AppEvents.IPostMessagePinned, originalMessage, await Meteor.userAsync(), originalMessage.pinned);
+		await Apps.self?.triggerEvent(AppEvents.IPostMessagePinned, originalMessage, await Meteor.userAsync(), originalMessage.pinned);
 
 		const msgId = await Message.saveSystemMessage('message_pinned', originalMessage.rid, '', me, {
 			attachments: [
@@ -212,8 +209,6 @@ Meteor.methods<ServerMethods>({
 			throw new Meteor.Error('not-authorized', 'Not Authorized', { method: 'unpinMessage' });
 		}
 
-		originalMessage = await callbacks.run('beforeSaveMessage', originalMessage);
-
 		originalMessage = await Message.beforeSave({ message: originalMessage, room, user: me });
 
 		if (isTheLastMessage(room, message)) {
@@ -221,15 +216,14 @@ Meteor.methods<ServerMethods>({
 		}
 
 		// App IPostMessagePinned event hook
-		await Apps.triggerEvent(AppEvents.IPostMessagePinned, originalMessage, await Meteor.userAsync(), originalMessage.pinned);
+		await Apps.self?.triggerEvent(AppEvents.IPostMessagePinned, originalMessage, await Meteor.userAsync(), originalMessage.pinned);
 
 		await Messages.setPinnedByIdAndUserId(originalMessage._id, originalMessage.pinnedBy, originalMessage.pinned);
 		if (settings.get('Message_Read_Receipt_Store_Users')) {
 			await ReadReceipts.setPinnedByMessageId(originalMessage._id, originalMessage.pinned);
 		}
-		void broadcastMessageSentEvent({
+		void broadcastMessageFromData({
 			id: message._id,
-			broadcastCallback: (message) => api.broadcast('message.sent', message),
 		});
 
 		return true;
