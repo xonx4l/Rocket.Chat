@@ -2,7 +2,7 @@ import { Settings } from '@rocket.chat/models';
 
 import { addMigration } from '../../lib/migrations';
 
-// Removes deprecated Show Message In Main Thread preference
+// Removes unused OAuth button colors settings
 addMigration({
 	version: 305,
 	async up() {
