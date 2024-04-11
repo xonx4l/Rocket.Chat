@@ -13,7 +13,8 @@ export const useDeleteRoom = (room: IRoom | Pick<IRoom, RoomAdminFieldsType>, { 
 	const router = useRouter();
 	const setModal = useSetModal();
 	const dispatchToastMessage = useToastMessageDispatch();
-
+	// eslint-disable-next-line no-nested-ternary
+	const roomType = 'prid' in room ? 'discussion' : room.teamId && room.teamMain ? 'team' : 'channel';
 	const isAdminRoute = router.getRouteName() === 'admin-rooms';
 
 	const deleteRoomEndpoint = useEndpoint('POST', '/v1/rooms.delete');
@@ -35,7 +36,7 @@ export const useDeleteRoom = (room: IRoom | Pick<IRoom, RoomAdminFieldsType>, { 
 	const deleteRoomMutation = useMutation({
 		mutationFn: deleteRoomEndpoint,
 		onSuccess: () => {
-			dispatchToastMessage({ type: 'success', message: t('Room_has_been_deleted') });
+			dispatchToastMessage({ type: 'success', message: t('Deleted_roomType', { roomName: room.name, roomType }) });
 			if (isAdminRoute) {
 				return router.navigate('/admin/rooms');
 			}
@@ -90,8 +91,14 @@ export const useDeleteRoom = (room: IRoom | Pick<IRoom, RoomAdminFieldsType>, { 
 		};
 
 		setModal(
-			<GenericModal variant='danger' onConfirm={handleDeleteRoom} onCancel={(): void => setModal(null)} confirmText={t('Yes_delete_it')}>
-				{t('Delete_Room_Warning')}
+			<GenericModal
+				title={t('Delete_roomType', { roomType })}
+				variant='danger'
+				onConfirm={handleDeleteRoom}
+				onCancel={(): void => setModal(null)}
+				confirmText={t('Yes_delete_it')}
+			>
+				{t('Delete_Room_Warning', { roomType })}
 			</GenericModal>,
 		);
 	});
