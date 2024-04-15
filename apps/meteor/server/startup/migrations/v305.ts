@@ -11,8 +11,12 @@ addMigration({
 			{ projection: { _id: 1 } },
 		).toArray();
 
-		for await (const setting of customOauthServicesButtonColors) {
-			await Settings.removeById(setting._id);
-		}
+		const settingsIdToDelete = customOauthServicesButtonColors.map(({ _id }) => _id);
+
+		await Settings.deleteMany({
+			_id: {
+				$in: settingsIdToDelete,
+			},
+		});
 	},
 });
