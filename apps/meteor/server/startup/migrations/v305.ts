@@ -1,7 +1,7 @@
+import type { ISetting } from '@rocket.chat/core-typings';
 import { Settings } from '@rocket.chat/models';
 import { isValidCron } from 'cron-validator';
 
-import { settings } from '../../../app/settings/server';
 import { addMigration } from '../../lib/migrations';
 
 addMigration({
@@ -10,8 +10,14 @@ addMigration({
 	async up() {
 		const newAvatarSyncPackageValue = '0 0 * * *';
 		const newAutoLogoutPackageValue = '*/5 * * * *';
-		const isValidAvatarSyncInterval = isValidCron(settings.get<string>('LDAP_Background_Sync_Avatars_Interval'));
-		const isValidAutoLogoutInterval = isValidCron(settings.get<string>('LDAP_Sync_AutoLogout_Interval'));
+		const ldapAvatarSyncInterval = await Settings.findOneById<Pick<ISetting, 'value'>>('LDAP_Background_Sync_Avatars_Interval', {
+			projection: { value: 1 },
+		});
+		const ldapAutoLogoutInterval = await Settings.findOneById<Pick<ISetting, 'value'>>('LDAP_Sync_AutoLogout_Interval', {
+			projection: { value: 1 },
+		});
+		const isValidAvatarSyncInterval = ldapAvatarSyncInterval && isValidCron(ldapAvatarSyncInterval.value);
+		const isValidAutoLogoutInterval = ldapAutoLogoutInterval && isValidCron(ldapAutoLogoutInterval.value);
 
 		await Settings.updateOne(
 			{ _id: 'LDAP_Background_Sync_Avatars_Interval' },
