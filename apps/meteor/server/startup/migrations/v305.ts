@@ -16,8 +16,8 @@ addMigration({
 		const ldapAutoLogoutInterval = await Settings.findOneById<Pick<ISetting, 'value'>>('LDAP_Sync_AutoLogout_Interval', {
 			projection: { value: 1 },
 		});
-		const isValidAvatarSyncInterval = ldapAvatarSyncInterval && isValidCron(ldapAvatarSyncInterval.value);
-		const isValidAutoLogoutInterval = ldapAutoLogoutInterval && isValidCron(ldapAutoLogoutInterval.value);
+		const isValidAvatarSyncInterval = ldapAvatarSyncInterval && isValidCron(ldapAvatarSyncInterval.value as string);
+		const isValidAutoLogoutInterval = ldapAutoLogoutInterval && isValidCron(ldapAutoLogoutInterval.value as string);
 
 		await Settings.updateOne(
 			{ _id: 'LDAP_Background_Sync_Avatars_Interval' },
