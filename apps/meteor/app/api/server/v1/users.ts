@@ -6,6 +6,8 @@ import {
 	isUserSetActiveStatusParamsPOST,
 	isUserDeactivateIdleParamsPOST,
 	isUsersInfoParamsGetProps,
+	isUsersListStatusProps,
+	isUsersSendWelcomeEmailProps,
 	isUserRegisterParamsPOST,
 	isUserLogoutParamsPOST,
 	isUsersListTeamsProps,
@@ -24,6 +26,7 @@ import type { Filter } from 'mongodb';
 
 import { i18n } from '../../../../server/lib/i18n';
 import { resetUserE2EEncriptionKey } from '../../../../server/lib/resetUserE2EKey';
+import { sendWelcomeEmail } from '../../../../server/lib/sendWelcomeEmail';
 import { saveUserPreferences } from '../../../../server/methods/saveUserPreferences';
 import { getUserForCheck, emailCheck } from '../../../2fa/server/code';
 import { resetTOTP } from '../../../2fa/server/functions/resetTOTP';
@@ -40,6 +43,7 @@ import { setStatusText } from '../../../lib/server/functions/setStatusText';
 import { setUserAvatar } from '../../../lib/server/functions/setUserAvatar';
 import { setUsernameWithValidation } from '../../../lib/server/functions/setUsername';
 import { validateCustomFields } from '../../../lib/server/functions/validateCustomFields';
+import { generateAccessToken } from '../../../lib/server/methods/createToken';
 import { settings } from '../../../settings/server';
 import { getURL } from '../../../utils/server/getURL';
 import { API } from '../api';
@@ -48,7 +52,7 @@ import { getUserFromParams } from '../helpers/getUserFromParams';
 import { isUserFromParams } from '../helpers/isUserFromParams';
 import { getUploadFormData } from '../lib/getUploadFormData';
 import { isValidQuery } from '../lib/isValidQuery';
-import { findUsersToAutocomplete, getInclusiveFields, getNonEmptyFields, getNonEmptyQuery } from '../lib/users';
+import { findPaginatedUsersByStatus, findUsersToAutocomplete, getInclusiveFields, getNonEmptyFields, getNonEmptyQuery } from '../lib/users';
 
 API.v1.addRoute(
 	'users.getAvatar',
@@ -304,13 +308,9 @@ API.v1.addRoute(
 
 API.v1.addRoute(
 	'users.delete',
-	{ authRequired: true },
+	{ authRequired: true, permissionsRequired: ['delete-user'] },
 	{
 		async post() {
-			if (!(await hasPermissionAsync(this.userId, 'delete-user'))) {
-				return API.v1.unauthorized();
-			}
-
 			const user = await getUserFromParams(this.bodyParams);
 			const { confirmRelinquish = false } = this.bodyParams;
 
@@ -345,16 +345,15 @@ API.v1.addRoute(
 
 API.v1.addRoute(
 	'users.setActiveStatus',
-	{ authRequired: true, validateParams: isUserSetActiveStatusParamsPOST },
+	{
+		authRequired: true,
+		validateParams: isUserSetActiveStatusParamsPOST,
+		permissionsRequired: {
+			POST: { permissions: ['edit-other-user-active-status', 'manage-moderation-actions'], operation: 'hasAny' },
+		},
+	},
 	{
 		async post() {
-			if (
-				!(await hasPermissionAsync(this.userId, 'edit-other-user-active-status')) &&
-				!(await hasPermissionAsync(this.userId, 'manage-moderation-actions'))
-			) {
-				return API.v1.unauthorized();
-			}
-
 			const { userId, activeStatus, confirmRelinquish = false } = this.bodyParams;
 			await Meteor.callAsync('setUserActiveStatus', userId, activeStatus, confirmRelinquish);
 
@@ -371,13 +370,9 @@ API.v1.addRoute(
 
 API.v1.addRoute(
 	'users.deactivateIdle',
-	{ authRequired: true, validateParams: isUserDeactivateIdleParamsPOST },
+	{ authRequired: true, validateParams: isUserDeactivateIdleParamsPOST, permissionsRequired: ['edit-other-user-active-status'] },
 	{
 		async post() {
-			if (!(await hasPermissionAsync(this.userId, 'edit-other-user-active-status'))) {
-				return API.v1.unauthorized();
-			}
-
 			const { daysIdle, role = 'user' } = this.bodyParams;
 
 			const lastLoggedIn = new Date();
@@ -448,13 +443,10 @@ API.v1.addRoute(
 	{
 		authRequired: true,
 		queryOperations: ['$or', '$and'],
+		permissionsRequired: ['view-d-room'],
 	},
 	{
 		async get() {
-			if (!(await hasPermissionAsync(this.userId, 'view-d-room'))) {
-				return API.v1.unauthorized();
-			}
-
 			if (
 				settings.get('API_Apply_permission_view-outside-room_on_users-list') &&
 				!(await hasPermissionAsync(this.userId, 'view-outside-room'))
@@ -556,6 +548,60 @@ API.v1.addRoute(
 );
 
 API.v1.addRoute(
+	'users.listByStatus',
+	{
+		authRequired: true,
+		validateParams: isUsersListStatusProps,
+		permissionsRequired: ['view-d-room'],
+	},
+	{
+		async get() {
+			if (
+				settings.get('API_Apply_permission_view-outside-room_on_users-list') &&
+				!(await hasPermissionAsync(this.userId, 'view-outside-room'))
+			) {
+				return API.v1.unauthorized();
+			}
+
+			const { offset, count } = await getPaginationItems(this.queryParams);
+			const { sort } = await this.parseJsonQuery();
+			const { status, hasLoggedIn, type, roles, searchTerm } = this.queryParams;
+
+			return API.v1.success(
+				await findPaginatedUsersByStatus({
+					uid: this.userId,
+					offset,
+					count,
+					sort,
+					status,
+					roles,
+					searchTerm,
+					hasLoggedIn,
+					type,
+				}),
+			);
+		},
+	},
+);
+
+API.v1.addRoute(
+	'users.sendWelcomeEmail',
+	{
+		authRequired: true,
+		validateParams: isUsersSendWelcomeEmailProps,
+		permissionsRequired: ['send-mail'],
+	},
+	{
+		async post() {
+			const { email } = this.bodyParams;
+			await sendWelcomeEmail(email);
+
+			return API.v1.success();
+		},
+	},
+);
+
+API.v1.addRoute(
 	'users.register',
 	{
 		authRequired: false,
@@ -636,11 +682,13 @@ API.v1.addRoute(
 
 API.v1.addRoute(
 	'users.createToken',
-	{ authRequired: true },
+	{ authRequired: true, deprecationVersion: '8.0.0' },
 	{
 		async post() {
 			const user = await getUserFromParams(this.bodyParams);
-			const data = await Meteor.callAsync('createToken', user._id);
+
+			const data = await generateAccessToken(this.userId, user._id);
+
 			return data ? API.v1.success({ data }) : API.v1.unauthorized();
 		},
 	},
@@ -744,13 +792,9 @@ API.v1.addRoute(
 
 API.v1.addRoute(
 	'users.getPersonalAccessTokens',
-	{ authRequired: true },
+	{ authRequired: true, permissionsRequired: ['create-personal-access-tokens'] },
 	{
 		async get() {
-			if (!(await hasPermissionAsync(this.userId, 'create-personal-access-tokens'))) {
-				throw new Meteor.Error('not-authorized', 'Not Authorized');
-			}
-
 			const user = (await Users.getLoginTokensByUserId(this.userId).toArray())[0] as unknown as IUser | undefined;
 
 			const isPersonalAccessToken = (loginToken: ILoginToken | IPersonalAccessToken): loginToken is IPersonalAccessToken =>
