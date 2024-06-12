@@ -1,6 +1,5 @@
-import { DEFAULT_USER_CREDENTIALS, IS_EE } from './config/constants';
+import { DEFAULT_USER_CREDENTIALS } from './config/constants';
 import { Registration } from './page-objects';
-import { setSettingValueById } from './utils/setSettingValueById';
 import { test, expect } from './utils/test';
 
 test.describe.serial('Presence', () => {
