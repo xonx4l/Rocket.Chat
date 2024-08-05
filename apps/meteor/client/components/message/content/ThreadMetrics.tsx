@@ -35,7 +35,7 @@ const ThreadMetrics = ({ unread, mention, all, rid, mid, counter, participants, 
 
 	const goToThread = useGoToThread();
 
-	const { ref, borderBoxSize } = useResizeObserver();
+	const { ref, borderBoxSize } = useResizeObserver<HTMLDivElement>();
 
 	const isSmall = (borderBoxSize.inlineSize || Infinity) < 320;
 
