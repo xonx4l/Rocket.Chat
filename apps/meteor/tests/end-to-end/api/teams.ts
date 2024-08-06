@@ -1389,7 +1389,7 @@ describe('[Teams]', () => {
 		after(async () => {
 			await Promise.all([deleteTeam(credentials, publicTeam.name), deleteTeam(credentials, privateTeam.name)]);
 			await Promise.all([
-				updatePermission('add-team-channel', ['admin', 'owner', 'moderator']),
+				updatePermission('move-room-to-team', ['admin', 'owner', 'moderator']),
 				...[privateRoom, privateRoom2, privateRoom3, publicRoom, publicRoom2].map((room) => deleteRoom({ type: room.t, roomId: room._id })),
 				deleteUser(testUser),
 			]);
