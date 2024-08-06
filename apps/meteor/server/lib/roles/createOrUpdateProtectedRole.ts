@@ -1,8 +1,6 @@
 import type { IRole, AtLeast } from '@rocket.chat/core-typings';
 import { Roles } from '@rocket.chat/models';
 
-import { notifyListenerOnRoleChanges } from '../../../app/lib/server/lib/notifyListenerOnRoleChanges';
-
 export const createOrUpdateProtectedRoleAsync = async (
 	roleId: string,
 	roleData: AtLeast<Omit<IRole, '_id' | 'protected'>, 'name'>,
@@ -12,7 +10,7 @@ export const createOrUpdateProtectedRoleAsync = async (
 	});
 
 	if (role) {
-		const updatedRole = await Roles.updateById(
+		await Roles.updateById(
 			roleId,
 			roleData.name || role.name,
 			roleData.scope || role.scope,
@@ -20,12 +18,10 @@ export const createOrUpdateProtectedRoleAsync = async (
 			roleData.mandatory2fa || role.mandatory2fa,
 		);
 
-		void notifyListenerOnRoleChanges(roleId, 'updated', updatedRole);
-
 		return;
 	}
 
-	const insertedRole = await Roles.insertOne({
+	await Roles.insertOne({
 		_id: roleId,
 		scope: 'Users',
 		description: '',
@@ -33,6 +29,4 @@ export const createOrUpdateProtectedRoleAsync = async (
 		...roleData,
 		protected: true,
 	});
-
-	void notifyListenerOnRoleChanges(insertedRole.insertedId, 'inserted');
 };
