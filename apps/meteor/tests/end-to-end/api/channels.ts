@@ -1489,16 +1489,10 @@ describe('[Channels]', () => {
 				.expect(200)
 				.expect((res) => {
 					expect(res.body).to.have.property('success', true);
-<<<<<<< HEAD:apps/meteor/tests/end-to-end/api/02-channels.js
-					const integrationCreated = res.body.integrations.find(
-						(createdIntegration) => createdIntegration._id === integrationCreatedByAnUser._id,
-					);
-=======
 					const integrationCreated = (res.body.integrations as IIntegration[]).find(
 						(createdIntegration) => createdIntegration._id === integrationCreatedByAnUser._id,
 					);
 					assert.isDefined(integrationCreated);
->>>>>>> 1eae86ea574d1aa6f116e6a13907a3e6e7338b3a:apps/meteor/tests/end-to-end/api/channels.ts
 					expect(integrationCreated).to.be.an('object');
 					expect(integrationCreated._id).to.be.equal(integrationCreatedByAnUser._id);
 					expect(res.body).to.have.property('offset');
@@ -2319,11 +2313,7 @@ describe('[Channels]', () => {
 	});
 
 	describe('[/channels.messages]', () => {
-<<<<<<< HEAD:apps/meteor/tests/end-to-end/api/02-channels.js
-		let testChannel;
-=======
 		let testChannel: IRoom;
->>>>>>> 1eae86ea574d1aa6f116e6a13907a3e6e7338b3a:apps/meteor/tests/end-to-end/api/channels.ts
 		before(async () => {
 			await updatePermission('view-c-room', ['admin', 'user', 'bot', 'app', 'anonymous']);
 			testChannel = (await createRoom({ type: 'c', name: `channels.messages.test.${Date.now()}` })).body.channel;
