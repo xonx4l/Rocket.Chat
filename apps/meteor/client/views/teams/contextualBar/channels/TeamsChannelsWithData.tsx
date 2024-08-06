@@ -55,6 +55,7 @@ const TeamsChannelsWithData = () => {
 	return (
 		<TeamsChannels
 			loading={phase === AsyncStatePhase.LOADING}
+			mainRoom={room}
 			type={type}
 			text={text}
 			setType={setType}
