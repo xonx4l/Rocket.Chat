@@ -1513,11 +1513,7 @@ describe('[Channels]', () => {
 				.expect(200)
 				.expect((res) => {
 					expect(res.body).to.have.property('success', true);
-<<<<<<< HEAD:apps/meteor/tests/end-to-end/api/02-channels.js
-					const integrationCreated = res.body.integrations.find(
-=======
 					const integrationCreated = (res.body.integrations as IIntegration[]).find(
->>>>>>> 1eae86ea574d1aa6f116e6a13907a3e6e7338b3a:apps/meteor/tests/end-to-end/api/channels.ts
 						(createdIntegration) => createdIntegration._id === integrationCreatedByAnUser._id,
 					);
 					expect(integrationCreated).to.be.equal(undefined);
