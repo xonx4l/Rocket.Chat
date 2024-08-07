@@ -18,7 +18,7 @@ type ThreadListMessageProps = {
 	name?: IMessage['u']['name'];
 	ts: IMessage['ts'];
 	replies: number;
-	participants: Array<string> | undefined;
+	participants: string[] | undefined;
 	rid: IMessage['rid'];
 	unread: boolean;
 	mention: boolean;
