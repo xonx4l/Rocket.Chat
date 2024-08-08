@@ -5,6 +5,7 @@ import type {
 	ISetting,
 	ILivechatVisitor,
 	MACStats,
+	LivechatPriorityWeight,
 } from '@rocket.chat/core-typings';
 import type { FindCursor, UpdateResult, AggregationCursor, Document, FindOptions, DeleteResult, Filter } from 'mongodb';
 
@@ -247,4 +248,6 @@ export interface ILivechatRoomsModel extends IBaseModel<IOmnichannelRoom> {
 	markVisitorActiveForPeriod(rid: string, period: string): Promise<UpdateResult>;
 	getMACStatisticsForPeriod(period: string): Promise<MACStats[]>;
 	getMACStatisticsBetweenDates(start: Date, end: Date): Promise<MACStats[]>;
+	countLivechatRoomsByPriority(priority: LivechatPriorityWeight): Promise<number>;
+	countLivechatRoomsWithDepartment(): Promise<number>;
 }
