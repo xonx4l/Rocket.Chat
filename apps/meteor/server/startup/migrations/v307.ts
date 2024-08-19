@@ -4,7 +4,7 @@ import { settings } from '../../../app/settings/server';
 import { addMigration } from '../../lib/migrations';
 
 addMigration({
-	version: 305,
+	version: 307,
 	name: 'Update translation key on "Forgot password" e-mail body setting',
 	async up() {
 		const forgotPasswordEmail = settings.get<string>('Forgot_Password_Email');
