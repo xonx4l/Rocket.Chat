@@ -32,6 +32,7 @@ const wrapper = mockAppRoot().withEndpoint('GET', '/v1/voip-freeswitch.extension
 it('should properly render error calls', async () => {
 	const errorSession = createErrorSession({ status: -1 });
 	render(<VoiceCallErrorView session={errorSession} />, {
+		legacyRoot: true,
 		wrapper: wrapper.build(),
 	});
 
@@ -56,6 +57,7 @@ it('should properly render error calls', async () => {
 it('should properly render unknown error calls', async () => {
 	const session = createErrorSession({ status: -1 });
 	render(<VoiceCallErrorView session={session} />, {
+		legacyRoot: true,
 		wrapper: wrapper.build(),
 	});
 
@@ -67,6 +69,7 @@ it('should properly render unknown error calls', async () => {
 it('should properly render error for unavailable calls', async () => {
 	const session = createErrorSession({ status: 480 });
 	render(<VoiceCallErrorView session={session} />, {
+		legacyRoot: true,
 		wrapper: wrapper.build(),
 	});
 
@@ -79,6 +82,7 @@ it('should properly render error for unavailable calls', async () => {
 it('should properly render error for busy calls', async () => {
 	const session = createErrorSession({ status: 486 });
 	render(<VoiceCallErrorView session={session} />, {
+		legacyRoot: true,
 		wrapper: wrapper.build(),
 	});
 
@@ -91,6 +95,7 @@ it('should properly render error for busy calls', async () => {
 it('should properly render error for terminated calls', async () => {
 	const session = createErrorSession({ status: 487 });
 	render(<VoiceCallErrorView session={session} />, {
+		legacyRoot: true,
 		wrapper: wrapper.build(),
 	});
 

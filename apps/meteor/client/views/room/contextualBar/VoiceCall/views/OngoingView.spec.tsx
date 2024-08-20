@@ -34,6 +34,7 @@ const ongoingSession = {
 
 it('should properly render ongoing calls', async () => {
 	render(<VoiceCallOngoingView session={ongoingSession} />, {
+		legacyRoot: true,
 		wrapper: wrapper.build(),
 	});
 

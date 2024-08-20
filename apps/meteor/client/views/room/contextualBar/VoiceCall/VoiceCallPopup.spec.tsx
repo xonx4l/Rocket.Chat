@@ -34,7 +34,7 @@ const createVoiceCallSession = (partial: Partial<VoiceCallSession>): VoiceCallSe
 
 it('should properly render incoming popup', async () => {
 	mockedUseVoiceCallSession.mockImplementationOnce(() => createVoiceCallSession({ type: 'INCOMING' }));
-	render(<VoiceCallPopup />, { wrapper: mockAppRoot().build() });
+	render(<VoiceCallPopup />, { legacyRoot: true, wrapper: mockAppRoot().build() });
 
 	expect(screen.getByTestId('vc-popup-incoming')).toBeInTheDocument();
 });
@@ -42,7 +42,7 @@ it('should properly render incoming popup', async () => {
 it('should properly render ongoing popup', async () => {
 	mockedUseVoiceCallSession.mockImplementationOnce(() => createVoiceCallSession({ type: 'ONGOING' }));
 
-	render(<VoiceCallPopup />, { wrapper: mockAppRoot().build() });
+	render(<VoiceCallPopup />, { legacyRoot: true, wrapper: mockAppRoot().build() });
 
 	expect(screen.getByTestId('vc-popup-ongoing')).toBeInTheDocument();
 });
@@ -50,7 +50,7 @@ it('should properly render ongoing popup', async () => {
 it('should properly render outgoing popup', async () => {
 	mockedUseVoiceCallSession.mockImplementationOnce(() => createVoiceCallSession({ type: 'OUTGOING' }));
 
-	render(<VoiceCallPopup />, { wrapper: mockAppRoot().build() });
+	render(<VoiceCallPopup />, { legacyRoot: true, wrapper: mockAppRoot().build() });
 
 	expect(screen.getByTestId('vc-popup-outgoing')).toBeInTheDocument();
 });
@@ -58,13 +58,13 @@ it('should properly render outgoing popup', async () => {
 it('should properly render error popup', async () => {
 	mockedUseVoiceCallSession.mockImplementationOnce(() => createVoiceCallSession({ type: 'ERROR' }));
 
-	render(<VoiceCallPopup />, { wrapper: mockAppRoot().build() });
+	render(<VoiceCallPopup />, { legacyRoot: true, wrapper: mockAppRoot().build() });
 
 	expect(screen.getByTestId('vc-popup-error')).toBeInTheDocument();
 });
 
 it('should properly render dialer popup', async () => {
-	render(<VoiceCallPopup />, { wrapper: mockAppRoot().build() });
+	render(<VoiceCallPopup />, { legacyRoot: true, wrapper: mockAppRoot().build() });
 
 	expect(screen.getByTestId('vc-popup-dialer')).toBeInTheDocument();
 });
@@ -72,7 +72,7 @@ it('should properly render dialer popup', async () => {
 it('should prioritize session over dialer', async () => {
 	mockedUseVoiceCallSession.mockImplementationOnce(() => createVoiceCallSession({ type: 'INCOMING' }));
 
-	render(<VoiceCallPopup />, { wrapper: mockAppRoot().build() });
+	render(<VoiceCallPopup />, { legacyRoot: true, wrapper: mockAppRoot().build() });
 
 	expect(screen.queryByTestId('vc-popup-dialer')).not.toBeInTheDocument();
 	expect(screen.getByTestId('vc-popup-incoming')).toBeInTheDocument();

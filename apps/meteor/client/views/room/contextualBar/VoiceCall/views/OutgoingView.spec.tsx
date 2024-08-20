@@ -30,6 +30,7 @@ const outgoingSession = {
 
 it('should properly render outgoing calls', async () => {
 	render(<VoiceCallOutgoingView session={outgoingSession} />, {
+		legacyRoot: true,
 		wrapper: wrapper.build(),
 	});
 

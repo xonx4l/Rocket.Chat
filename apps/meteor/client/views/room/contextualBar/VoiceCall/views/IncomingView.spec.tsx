@@ -33,6 +33,7 @@ const incomingSession = {
 
 it('should properly render incoming calls', async () => {
 	render(<VoiceCallIncomingView session={incomingSession} />, {
+		legacyRoot: true,
 		wrapper: wrapper.build(),
 	});
 

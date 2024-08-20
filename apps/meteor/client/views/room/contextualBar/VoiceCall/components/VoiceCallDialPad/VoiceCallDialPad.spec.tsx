@@ -5,7 +5,7 @@ import React from 'react';
 
 import DialPad from './VoiceCallDialPad';
 
-describe('DialPad', () => {
+describe('VoiceCallDialPad', () => {
 	beforeEach(() => {
 		jest.useFakeTimers();
 	});
@@ -17,7 +17,7 @@ describe('DialPad', () => {
 	it('should not be editable by default', () => {
 		const fn = jest.fn();
 
-		render(<DialPad value='' onChange={fn} />);
+		render(<DialPad value='' onChange={fn} />, { legacyRoot: true });
 
 		expect(screen.getByLabelText('Phone_number')).toHaveAttribute('readOnly');
 	});
@@ -25,7 +25,7 @@ describe('DialPad', () => {
 	it('should enable input when editable', () => {
 		const fn = jest.fn();
 
-		render(<DialPad editable value='' onChange={fn} />);
+		render(<DialPad editable value='' onChange={fn} />, { legacyRoot: true });
 
 		expect(screen.getByLabelText('Phone_number')).not.toHaveAttribute('readOnly');
 	});
@@ -33,7 +33,7 @@ describe('DialPad', () => {
 	it('should disable backspace button when input is empty', () => {
 		const fn = jest.fn();
 
-		render(<DialPad editable value='' onChange={fn} />);
+		render(<DialPad editable value='' onChange={fn} />, { legacyRoot: true });
 
 		expect(screen.getByTestId('dial-paid-input-backspace')).toBeDisabled();
 	});
@@ -41,7 +41,7 @@ describe('DialPad', () => {
 	it('should enable backspace button when input has value', () => {
 		const fn = jest.fn();
 
-		render(<DialPad editable value='123' onChange={fn} />);
+		render(<DialPad editable value='123' onChange={fn} />, { legacyRoot: true });
 
 		expect(screen.getByTestId('dial-paid-input-backspace')).toBeEnabled();
 	});
@@ -49,7 +49,7 @@ describe('DialPad', () => {
 	it('should remove last character when backspace is clicked', () => {
 		const fn = jest.fn();
 
-		render(<DialPad editable value='123' onChange={fn} />);
+		render(<DialPad editable value='123' onChange={fn} />, { legacyRoot: true });
 
 		expect(screen.getByLabelText('Phone_number')).toHaveValue('123');
 
@@ -61,7 +61,7 @@ describe('DialPad', () => {
 	it('should call onChange when number is clicked', () => {
 		const fn = jest.fn();
 
-		render(<DialPad editable value='123' onChange={fn} />);
+		render(<DialPad editable value='123' onChange={fn} />, { legacyRoot: true });
 
 		['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'].forEach((digit) => {
 			screen.getByTestId(`dial-pad-button-${digit}`).click();
@@ -72,7 +72,7 @@ describe('DialPad', () => {
 	it('should call onChange with + when 0 pressed and held', () => {
 		const fn = jest.fn();
 
-		render(<DialPad editable longPress value='123' onChange={fn} />);
+		render(<DialPad editable longPress value='123' onChange={fn} />, { legacyRoot: true });
 
 		const button = screen.getByTestId('dial-pad-button-0');
 

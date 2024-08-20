@@ -14,7 +14,7 @@ jest.mock('../../../../../providers/VoiceCallProvider/hooks/useVoiceCallAPI', ()
 }));
 
 it('should look good', async () => {
-	render(<VoiceCallDialerView />, { wrapper: mockAppRoot().build() });
+	render(<VoiceCallDialerView />, { legacyRoot: true, wrapper: mockAppRoot().build() });
 
 	expect(screen.getByText('New_Call')).toBeInTheDocument();
 	expect(screen.getByTitle('Device_settings')).toBeEnabled();
@@ -22,7 +22,7 @@ it('should look good', async () => {
 });
 
 it('should only enable call button if input has value (keyboard)', async () => {
-	render(<VoiceCallDialerView />, { wrapper: mockAppRoot().build() });
+	render(<VoiceCallDialerView />, { legacyRoot: true, wrapper: mockAppRoot().build() });
 
 	expect(screen.getByRole('button', { name: /Call/i })).toBeDisabled();
 	userEvent.type(screen.getByLabelText('Phone_number'), '123');
@@ -30,7 +30,7 @@ it('should only enable call button if input has value (keyboard)', async () => {
 });
 
 it('should only enable call button if input has value (mouse)', async () => {
-	render(<VoiceCallDialerView />, { wrapper: mockAppRoot().build() });
+	render(<VoiceCallDialerView />, { legacyRoot: true, wrapper: mockAppRoot().build() });
 
 	expect(screen.getByRole('button', { name: /Call/i })).toBeDisabled();
 	screen.getByTestId(`dial-pad-button-1`).click();
@@ -40,7 +40,7 @@ it('should only enable call button if input has value (mouse)', async () => {
 });
 
 it('should call methods makeCall and closeDialer when call button is clicked', async () => {
-	render(<VoiceCallDialerView />, { wrapper: mockAppRoot().build() });
+	render(<VoiceCallDialerView />, { legacyRoot: true, wrapper: mockAppRoot().build() });
 
 	userEvent.type(screen.getByLabelText('Phone_number'), '123');
 	screen.getByTestId(`dial-pad-button-1`).click();
