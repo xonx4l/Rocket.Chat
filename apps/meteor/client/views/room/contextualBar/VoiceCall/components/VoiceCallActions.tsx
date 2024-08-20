@@ -1,136 +1,86 @@
-import { ButtonGroup, IconButton } from '@rocket.chat/fuselage';
+import { ButtonGroup } from '@rocket.chat/fuselage';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-type VoiceCallActionsProps = {
+import ActionButton from './VoiceCallActionButton';
+
+type VoiceCallGenericActionsProps = {
 	isDTMFActive?: boolean;
 	isTransferActive?: boolean;
 	isMuted?: boolean;
 	isHeld?: boolean;
 	onDTMF?: () => void;
-	onEndCall?: () => void;
 	onTransfer?: () => void;
-	onDecline?: () => void;
 	onMute?: (muted: boolean) => void;
 	onHold?: (held: boolean) => void;
-	onAccept?: () => void;
 };
 
-export const VoiceCallActions = ({
-	isMuted,
-	isHeld,
-	isDTMFActive,
-	onDTMF,
-	onTransfer,
-	isTransferActive,
-	onAccept,
-	onDecline,
-	onMute,
-	onHold,
-	onEndCall,
-}: VoiceCallActionsProps) => {
+type VoiceCallIncomingActionsProps = VoiceCallGenericActionsProps & {
+	onEndCall?: never;
+	onDecline: () => void;
+	onAccept: () => void;
+};
+
+type VoiceCallOngoingActionsProps = VoiceCallGenericActionsProps & {
+	onDecline?: never;
+	onAccept?: never;
+	onEndCall: () => void;
+};
+
+type VoiceCallActionsProps = VoiceCallIncomingActionsProps | VoiceCallOngoingActionsProps;
+
+const isIncoming = (props: VoiceCallActionsProps): props is VoiceCallIncomingActionsProps => {
+	return 'onDecline' in props && 'onAccept' in props && !('onEndCall' in props);
+};
+
+const isOngoing = (props: VoiceCallActionsProps): props is VoiceCallOngoingActionsProps => {
+	return 'onEndCall' in props && !('onAccept' in props && 'onDecline' in props);
+};
+
+export const VoiceCallActions = ({ isMuted, isHeld, isDTMFActive, isTransferActive, ...events }: VoiceCallActionsProps) => {
 	const { t } = useTranslation();
 
 	return (
 		<ButtonGroup large>
-			{onDecline && (
-				<IconButton
-					mini
-					danger
-					secondary
-					width={32}
-					height={32}
-					icon='phone-off'
-					data-tooltip={t('Decline')}
-					aria-label={t('Decline')}
-					data-testid='vs-action-decline'
-					onClick={() => onDecline()}
-				/>
-			)}
+			{isIncoming(events) && <ActionButton danger label={t('Decline')} icon='phone-off' onClick={events.onDecline} />}
 
-			<IconButton
-				mini
-				width={32}
-				height={32}
-				pressed={isMuted}
+			<ActionButton
+				label={isMuted ? t('Turn_on_microphone') : t('Turn_off_microphone')}
 				icon='mic-off'
-				aria-label={isMuted ? t('Turn_on_microphone') : t('Turn_off_microphone')}
-				data-tooltip={isMuted ? t('Turn_on_microphone') : t('Turn_off_microphone')}
-				data-testid='vs-action-toggle-mic'
-				disabled={!onMute}
-				onClick={() => onMute?.(!isMuted)}
+				pressed={isMuted}
+				disabled={!events.onMute}
+				onClick={() => events.onMute?.(!isMuted)}
 			/>
 
-			{!onAccept && (
-				<IconButton
-					mini
-					width={32}
-					height={32}
-					pressed={isHeld}
+			{!isIncoming(events) && (
+				<ActionButton
+					label={isHeld ? t('Resume') : t('Hold')}
 					icon='pause-shape-unfilled'
-					aria-label={isHeld ? t('Resume') : t('Hold')}
-					data-tooltip={isHeld ? t('Resume') : t('Hold')}
-					data-testid='vs-action-toggle-hold'
-					disabled={!onHold}
-					onClick={() => onHold?.(!isHeld)}
+					pressed={isHeld}
+					disabled={!events.onHold}
+					onClick={() => events.onHold?.(!isHeld)}
 				/>
 			)}
 
-			<IconButton
-				mini
-				width={32}
-				height={32}
+			<ActionButton
+				label={isDTMFActive ? t('Close_Dialpad') : t('Open_Dialpad')}
 				icon='dialpad'
 				pressed={isDTMFActive}
-				disabled={!onDTMF}
-				aria-label={isDTMFActive ? t('Close_Dialpad') : t('Open_Dialpad')}
-				data-tooltip={isDTMFActive ? t('Close_Dialpad') : t('Open_Dialpad')}
-				data-testid='vs-action-toggle-dial-pad'
-				onClick={() => onDTMF?.()}
+				disabled={!events.onDTMF}
+				onClick={events.onDTMF}
 			/>
 
-			<IconButton
-				mini
+			<ActionButton
+				label={t('Transfer_call')}
 				icon='arrow-forward'
-				width={32}
-				height={32}
-				aria-label={t('Transfer_call')}
-				data-tooltip={t('Transfer_call')}
-				data-testid='vs-action-transfer-call'
 				pressed={isTransferActive}
-				disabled={!onTransfer}
-				onClick={() => onTransfer?.()}
+				disabled={!events.onTransfer}
+				onClick={events.onTransfer}
 			/>
 
-			{onEndCall && (
-				<IconButton
-					mini
-					secondary
-					danger
-					width={32}
-					height={32}
-					icon='phone-off'
-					disabled={isHeld}
-					aria-label={t('End_call')}
-					data-tooltip={t('End_Call')}
-					data-testid='vs-action-end-call'
-					onClick={() => onEndCall()}
-				/>
-			)}
+			{isOngoing(events) && <ActionButton danger label={t('End_call')} icon='phone-off' disabled={isHeld} onClick={events.onEndCall} />}
 
-			{onAccept && (
-				<IconButton
-					mini
-					success
-					secondary
-					width={32}
-					height={32}
-					icon='phone'
-					aria-label={t('Accept')}
-					data-tooltip={t('Accept')}
-					onClick={() => onAccept()}
-				/>
-			)}
+			{isIncoming(events) && <ActionButton success label={t('Accept')} icon='phone' onClick={events.onAccept} />}
 		</ButtonGroup>
 	);
 };
