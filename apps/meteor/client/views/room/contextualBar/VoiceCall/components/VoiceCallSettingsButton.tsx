@@ -15,7 +15,7 @@ const CustomizeButton = forwardRef(function CustomizeButton(
 	return <IconButton {...props} ref={ref} icon='customize' mini width={size} height={size} />;
 });
 
-const VoiceCallSettingsButton = ({ mini = false }: { mini?: boolean }) => {
+export const VoiceCallSettingsButton = ({ mini = false }: { mini?: boolean }) => {
 	const { t } = useTranslation();
 	const sections = useVoiceCallSettingsMenu();
 

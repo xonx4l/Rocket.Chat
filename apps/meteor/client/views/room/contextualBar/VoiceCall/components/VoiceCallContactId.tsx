@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-const CallContactID = ({
+export const VoiceCallContactId = ({
 	name,
 	username,
 	transferedBy,
@@ -72,4 +72,4 @@ const CallContactID = ({
 	);
 };
 
-export default CallContactID;
+export default VoiceCallContactId;

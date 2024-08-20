@@ -24,7 +24,7 @@ const dialPadButtonClass = css`
 	}
 `;
 
-const DialPadButton = ({ digit, subDigit, longPressDigit, onClick }: DialPadButtonProps) => {
+export const VoiceCallDialPadButton = ({ digit, subDigit, longPressDigit, onClick }: DialPadButtonProps) => {
 	const { t } = useTranslation();
 	const events = useLongPress(() => longPressDigit && onClick(longPressDigit), {
 		onClick: () => onClick(digit),
@@ -50,4 +50,4 @@ const DialPadButton = ({ digit, subDigit, longPressDigit, onClick }: DialPadButt
 	);
 };
 
-export default DialPadButton;
+export default VoiceCallDialPadButton;

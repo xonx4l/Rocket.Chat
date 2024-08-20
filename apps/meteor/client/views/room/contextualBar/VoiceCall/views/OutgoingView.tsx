@@ -2,18 +2,24 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { VoiceCallOutgoingSession } from '../../../../../lib/voip/definitions';
-import { Actions, CallContactID, Container, Footer, Header } from '../components';
-import { useVoiceCallContactID } from '../hooks/useVoiceCallContactID';
+import {
+	VoiceCallActions as Actions,
+	VoiceCallContactId as CallContactId,
+	VoiceCallContainer as Container,
+	VoiceCallFooter as Footer,
+	VoiceCallHeader as Header,
+} from '../components';
+import { useVoiceCallContactId } from '../hooks/useVoiceCallContactId';
 
 export const VoiceCallOutgoingView = ({ session }: { session: VoiceCallOutgoingSession }) => {
 	const { t } = useTranslation();
-	const contactData = useVoiceCallContactID({ session });
+	const contactData = useVoiceCallContactId({ session });
 
 	return (
 		<Container data-testid='vc-popup-outgoing'>
 			<Header>{`${t('Calling')}...`}</Header>
 
-			<CallContactID {...contactData} />
+			<CallContactId {...contactData} />
 
 			<Footer>
 				<Actions onEndCall={session.end} />

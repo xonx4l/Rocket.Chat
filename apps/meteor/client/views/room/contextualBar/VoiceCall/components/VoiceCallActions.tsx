@@ -16,7 +16,7 @@ type VoiceCallActionsProps = {
 	onAccept?: () => void;
 };
 
-const VoiceCallActions = ({
+export const VoiceCallActions = ({
 	isMuted,
 	isHeld,
 	isDTMFActive,

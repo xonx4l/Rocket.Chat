@@ -3,8 +3,8 @@ import { Box } from '@rocket.chat/fuselage';
 import React from 'react';
 import { FocusScope } from 'react-aria';
 
-import DialPadButton from './DialPadButton';
-import { DialPadInput } from './DialPadInput';
+import DialPadButton from './VoiceCallDialPadButton';
+import DialPadInput from './VoiceCallDialPadInput';
 
 type DialPadProps = {
 	value: string;
@@ -39,7 +39,7 @@ const dialPadClassName = css`
 	}
 `;
 
-const DialPad = ({ editable = false, value, longPress = true, onChange }: DialPadProps) => {
+export const VoiceCallDialPad = ({ editable = false, value, longPress = true, onChange }: DialPadProps) => {
 	return (
 		<FocusScope autoFocus>
 			<Box is='section'>
@@ -68,4 +68,4 @@ const DialPad = ({ editable = false, value, longPress = true, onChange }: DialPa
 	);
 };
 
-export default DialPad;
+export default VoiceCallDialPad;

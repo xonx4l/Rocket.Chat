@@ -18,7 +18,7 @@ const className = css`
 	height: 28px;
 `;
 
-export const DialPadInput = ({ readOnly, value, onChange, onBackpaceClick }: DialPadInputProps) => {
+export const VoiceCallDialPadInput = ({ readOnly, value, onChange, onBackpaceClick }: DialPadInputProps) => {
 	const { t } = useTranslation();
 
 	return (
@@ -45,3 +45,5 @@ export const DialPadInput = ({ readOnly, value, onChange, onBackpaceClick }: Dia
 		/>
 	);
 };
+
+export default VoiceCallDialPadInput;

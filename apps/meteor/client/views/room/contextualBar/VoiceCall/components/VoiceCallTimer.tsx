@@ -4,7 +4,7 @@ import { setPreciseInterval } from '../utils/setPreciseInterval';
 
 type VoiceCallTimerProps = { startAt?: Date };
 
-const VoiceCallTimer = ({ startAt = new Date() }: VoiceCallTimerProps) => {
+export const VoiceCallTimer = ({ startAt = new Date() }: VoiceCallTimerProps) => {
 	const [start] = useState(startAt.getTime());
 	const [ellapsedTime, setEllapsedTime] = useState(0);
 

@@ -1,7 +1,7 @@
 import type { VoiceCallSession } from '../../../../../lib/voip/definitions';
 import { useVoiceCallExtensionDetails } from './useVoiceCallExtensionDetails';
 
-export const useVoiceCallContactID = ({ session, transferEnabled = true }: { session: VoiceCallSession; transferEnabled?: boolean }) => {
+export const useVoiceCallContactId = ({ session, transferEnabled = true }: { session: VoiceCallSession; transferEnabled?: boolean }) => {
 	const { data: contact, isInitialLoading: isLoading } = useVoiceCallExtensionDetails({ extension: session.contact.id });
 	const { data: transferedByContact } = useVoiceCallExtensionDetails({
 		extension: session.transferedBy?.id,

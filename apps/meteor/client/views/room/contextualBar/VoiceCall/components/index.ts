@@ -1,9 +1,9 @@
-export { default as Actions } from './Actions';
-export { default as Container } from './Container';
-export { default as Footer } from './Footer';
-export { default as Header } from './Header';
-export { default as Timer } from './Timer';
-export { default as DialPad } from './DialPad';
-export { default as CallContactID } from './CallContactID';
-export { default as Status } from './Status';
-export { default as SettingsButton } from './CallSettingsButton';
+export * from './VoiceCallActions';
+export * from './VoiceCallContainer';
+export * from './VoiceCallFooter';
+export * from './VoiceCallHeader';
+export * from './VoiceCallTimer';
+export * from './VoiceCallDialPad';
+export * from './VoiceCallContactId';
+export * from './VoiceCallStatus';
+export * from './VoiceCallSettingsButton';

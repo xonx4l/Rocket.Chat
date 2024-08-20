@@ -3,7 +3,13 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useVoiceCallAPI } from '../../../../../providers/VoiceCallProvider/hooks/useVoiceCallAPI';
-import { Container, DialPad, Footer, Header, SettingsButton } from '../components';
+import {
+	VoiceCallContainer as Container,
+	VoiceCallFooter as Footer,
+	VoiceCallHeader as Header,
+	VoiceCallDialPad as DialPad,
+	VoiceCallSettingsButton as SettingsButton,
+} from '../components';
 
 export const VoiceCallDialerView = () => {
 	const { t } = useTranslation();

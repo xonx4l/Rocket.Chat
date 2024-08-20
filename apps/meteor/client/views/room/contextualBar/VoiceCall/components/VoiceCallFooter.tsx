@@ -2,7 +2,7 @@ import { Box } from '@rocket.chat/fuselage';
 import type { ReactNode } from 'react';
 import React from 'react';
 
-const VoiceCallFooter = ({ children }: { children: ReactNode }) => {
+export const VoiceCallFooter = ({ children }: { children: ReactNode }) => {
 	return (
 		<Box is='footer' data-testid='vc-popup-footer' p={12} mbs='auto' bg='surface-light'>
 			{children}

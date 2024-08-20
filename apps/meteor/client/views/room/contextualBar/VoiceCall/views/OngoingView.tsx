@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
 
 import type { VoiceCallOngoingSession } from '../../../../../lib/voip/definitions';
-import { Actions, CallContactID, Container, DialPad, Header, Timer, Status, Footer } from '../components';
-import { useVoiceCallContactID } from '../hooks/useVoiceCallContactID';
+import {
+	VoiceCallActions as Actions,
+	VoiceCallContactId as CallContactId,
+	VoiceCallContainer as Container,
+	VoiceCallFooter as Footer,
+	VoiceCallHeader as Header,
+	VoiceCallStatus as Status,
+	VoiceCallDialPad as DialPad,
+	VoiceCallTimer as Timer,
+} from '../components';
+import { useVoiceCallContactId } from '../hooks/useVoiceCallContactId';
 import useVoiceCallTransferModal from '../hooks/useVoiceCallTransferModal';
 
 export const VoiceCallOngoingView = ({ session }: { session: VoiceCallOngoingSession }) => {
 	const { startTransfer } = useVoiceCallTransferModal({ session });
-	const contactData = useVoiceCallContactID({ session, transferEnabled: false });
+	const contactData = useVoiceCallContactId({ session, transferEnabled: false });
 
 	const [isDialPadOpen, setDialerOpen] = useState(false);
 	const [dtmfValue, setDTMF] = useState('');
@@ -27,7 +36,7 @@ export const VoiceCallOngoingView = ({ session }: { session: VoiceCallOngoingSes
 
 			<Status isMuted={session.isMuted} isHeld={session.isHeld} />
 
-			<CallContactID {...contactData} />
+			<CallContactId {...contactData} />
 
 			{isDialPadOpen && <DialPad value={dtmfValue} longPress={false} onChange={handleDTMF} />}
 

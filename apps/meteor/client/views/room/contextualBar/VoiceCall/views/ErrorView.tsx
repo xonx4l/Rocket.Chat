@@ -3,12 +3,18 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { VoiceCallErrorSession } from '../../../../../lib/voip/definitions';
-import { Actions, CallContactID, Container, Footer, Header } from '../components';
-import { useVoiceCallContactID } from '../hooks/useVoiceCallContactID';
+import {
+	VoiceCallActions as Actions,
+	VoiceCallContactId as CallContactId,
+	VoiceCallContainer as Container,
+	VoiceCallFooter as Footer,
+	VoiceCallHeader as Header,
+} from '../components';
+import { useVoiceCallContactId } from '../hooks/useVoiceCallContactId';
 
 export const VoiceCallErrorView = ({ session }: { session: VoiceCallErrorSession }) => {
 	const { t } = useTranslation();
-	const contactData = useVoiceCallContactID({ session });
+	const contactData = useVoiceCallContactId({ session });
 
 	const { status } = session.error;
 
@@ -33,7 +39,7 @@ export const VoiceCallErrorView = ({ session }: { session: VoiceCallErrorSession
 				</Box>
 			</Header>
 
-			<CallContactID {...contactData} />
+			<CallContactId {...contactData} />
 
 			<Footer>
 				<Actions onEndCall={session.end} />

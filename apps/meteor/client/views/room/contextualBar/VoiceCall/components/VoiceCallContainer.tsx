@@ -10,7 +10,7 @@ type ContainerProps = {
 	['data-testid']: string;
 };
 
-export const Container = styled('article', ({ secondary: _secondary, ...props }: { secondary: boolean }) => props)`
+const Container = styled('article', ({ secondary: _secondary, ...props }: { secondary: boolean }) => props)`
 	position: fixed;
 	bottom: 132px;
 	right: 24px;
@@ -26,7 +26,7 @@ export const Container = styled('article', ({ secondary: _secondary, ...props }:
 	z-index: 100;
 `;
 
-const VoiceCallContainer = ({ children, secondary = false, ...props }: ContainerProps) => {
+export const VoiceCallContainer = ({ children, secondary = false, ...props }: ContainerProps) => {
 	return (
 		<FocusScope autoFocus contain restoreFocus>
 			<Container role='dialog' aria-labelledby='voiceCallPopupTitle' secondary={secondary} {...props}>

@@ -2,7 +2,7 @@ import { Box, IconButton } from '@rocket.chat/fuselage';
 import type { ReactNode } from 'react';
 import React from 'react';
 
-import VoiceCallSettingsButton from './CallSettingsButton';
+import VoiceCallSettingsButton from './VoiceCallSettingsButton';
 
 type VoiceCallHeaderProps = {
 	children: ReactNode;
@@ -10,7 +10,7 @@ type VoiceCallHeaderProps = {
 	onClose?: () => void;
 };
 
-const VoiceCallHeader = ({ children, hideSettings, onClose }: VoiceCallHeaderProps) => {
+export const VoiceCallHeader = ({ children, hideSettings, onClose }: VoiceCallHeaderProps) => {
 	return (
 		<Box is='header' p={12} pbe={4} display='flex' alignItems='center' justifyContent='space-between'>
 			{children && (
