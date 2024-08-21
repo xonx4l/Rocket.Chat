@@ -8,7 +8,9 @@ import { useTranslation } from 'react-i18next';
 import { useVoiceCallDialer } from '../../providers/VoiceCallProvider/hooks/useVoiceCallDialer';
 import { useVoiceCallState } from '../../providers/VoiceCallProvider/hooks/useVoiceCallState';
 
-type NavBarItemVoiceCallDialerProps = Omit<HTMLAttributes<HTMLElement>, 'is'>;
+type NavBarItemVoiceCallDialerProps = Omit<HTMLAttributes<HTMLElement>, 'is'> & {
+	primary?: boolean;
+};
 
 const NavBarItemVoiceCallDialer = (props: NavBarItemVoiceCallDialerProps) => {
 	const { t } = useTranslation();
@@ -30,13 +32,12 @@ const NavBarItemVoiceCallDialer = (props: NavBarItemVoiceCallDialerProps) => {
 			return t('Voice_calling_disabled');
 		}
 
-		return t('New_call');
+		return t('New_Call');
 	}, [isReady, isRegistered, t]);
 
 	return isEnabled ? (
 		<NavBarItem
 			{...props}
-			primary
 			title={title}
 			icon='phone'
 			onClick={handleToggleDialer}
