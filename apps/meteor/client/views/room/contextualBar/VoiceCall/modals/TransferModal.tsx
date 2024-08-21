@@ -71,13 +71,7 @@ export const VoiceCallTransferModal = ({ extension, isLoading = false, onCancel,
 					<Button data-testid='vc-button-cancel' secondary onClick={onCancel}>
 						{t('Cancel')}
 					</Button>
-					<Button
-						danger
-						onClick={handleConfirm}
-						disabled={!targetUser?.freeSwitchExtension}
-						loading={isLoading || isTargetInfoLoading}
-						data-testid='vc-button-transfer'
-					>
+					<Button danger onClick={handleConfirm} disabled={!targetUser?.freeSwitchExtension} loading={isLoading || isTargetInfoLoading}>
 						{t('Hang_up_and_transfer_call')}
 					</Button>
 				</Modal.FooterControllers>
