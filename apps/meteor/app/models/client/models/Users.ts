@@ -40,4 +40,4 @@ Object.assign(Meteor.users, {
 });
 
 /** @deprecated */
-export const Users = Meteor.users as UsersCollection;
+export const Users = Meteor.users as unknown as UsersCollection;
