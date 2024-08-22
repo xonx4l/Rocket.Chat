@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-await-sync-events */
 import '@testing-library/jest-dom';
 import { mockAppRoot } from '@rocket.chat/mock-providers';
 import { render, screen } from '@testing-library/react';
@@ -25,7 +26,7 @@ it('should only enable call button if input has value (keyboard)', async () => {
 	render(<VoiceCallDialerView />, { legacyRoot: true, wrapper: mockAppRoot().build() });
 
 	expect(screen.getByRole('button', { name: /Call/i })).toBeDisabled();
-	userEvent.type(screen.getByLabelText('Phone_number'), '123');
+	await userEvent.type(screen.getByLabelText('Phone_number'), '123');
 	expect(screen.getByRole('button', { name: /Call/i })).toBeEnabled();
 });
 
@@ -42,7 +43,7 @@ it('should only enable call button if input has value (mouse)', async () => {
 it('should call methods makeCall and closeDialer when call button is clicked', async () => {
 	render(<VoiceCallDialerView />, { legacyRoot: true, wrapper: mockAppRoot().build() });
 
-	userEvent.type(screen.getByLabelText('Phone_number'), '123');
+	await userEvent.type(screen.getByLabelText('Phone_number'), '123');
 	screen.getByTestId(`dial-pad-button-1`).click();
 	screen.getByRole('button', { name: /Call/i }).click();
 	expect(makeCall).toHaveBeenCalledWith('1231');
