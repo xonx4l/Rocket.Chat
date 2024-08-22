@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 
 import GenericMenu from '../../../components/GenericMenu/GenericMenu';
+import HeaderToolbarAction from '../../../components/Header/HeaderToolbarAction';
 import type { RoomToolboxActionConfig } from '../../../views/room/contexts/RoomToolboxContext';
 import useVideoConfMenuOptions from './useVideoConfMenuOptions';
 import useVoiceCallMenuOptions from './useVoiceCallMenuOptions';
@@ -25,6 +26,7 @@ export const useStartCallRoomAction = () => {
 			featured: true,
 			renderToolboxItem: ({ id, icon, title, disabled }) => (
 				<GenericMenu
+					button={<HeaderToolbarAction />}
 					key={id}
 					title={title}
 					disabled={disabled}
