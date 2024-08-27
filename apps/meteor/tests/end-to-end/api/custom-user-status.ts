@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { before, after, describe, it } from 'mocha';
 
 import { getCredentials, api, request, credentials } from '../../data/api-data';
+import { updatePermission } from '../../data/permissions.helper';
 
 describe('[CustomUserStatus]', () => {
 	before((done) => getCredentials(done));
@@ -40,9 +41,12 @@ describe('[CustomUserStatus]', () => {
 	});
 
 	describe('[/custom-user-status.create]', () => {
-		let customUserStatusId;
+		let customUserStatusId: string;
+
+		before(() => updatePermission('manage-user-status', ['admin']));
 
 		after(async () => {
+			await updatePermission('manage-user-status', ['admin']);
 			return request
 				.post(api('custom-user-status.delete'))
 				.set(credentials)
@@ -108,10 +112,11 @@ describe('[CustomUserStatus]', () => {
 	});
 
 	describe('[/custom-user-status.update]', () => {
-		let customUserStatusId;
+		let customUserStatusId: string;
 		const customUserStatusName = 'custom-status';
 
 		before(async () => {
+			await updatePermission('manage-user-status', ['admin']);
 			return request
 				.post(api('custom-user-status.create'))
 				.set(credentials)
@@ -132,6 +137,7 @@ describe('[CustomUserStatus]', () => {
 		});
 
 		after(async () => {
+			await updatePermission('manage-user-status', ['admin']);
 			return request
 				.post(api('custom-user-status.delete'))
 				.set(credentials)

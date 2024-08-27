@@ -1,5 +1,5 @@
 import { api } from '@rocket.chat/core-services';
-import type { ICustomUserStatus } from '@rocket.chat/core-typings';
+import type { ICustomUserStatus, CustomizableUserStatus } from '@rocket.chat/core-typings';
 import type { ServerMethods } from '@rocket.chat/ddp-client';
 import type { InsertionModel } from '@rocket.chat/model-typings';
 import { CustomUserStatus } from '@rocket.chat/models';
@@ -64,7 +64,7 @@ Meteor.methods<ServerMethods>({
 			});
 		}
 
-		const validStatusTypes = ['online', 'away', 'busy', 'offline'];
+		const validStatusTypes = Object.values(CustomizableUserStatus);
 		if (userStatusData.statusType && validStatusTypes.indexOf(userStatusData.statusType) < 0) {
 			throw new Meteor.Error('error-input-is-not-a-valid-field', `${userStatusData.statusType} is not a valid status type`, {
 				method: 'insertOrUpdateUserStatus',

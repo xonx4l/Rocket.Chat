@@ -1,5 +1,5 @@
 import type { ICustomUserStatus, IUserStatus } from '@rocket.chat/core-typings';
-import { UserStatus } from '@rocket.chat/core-typings';
+import { CustomizableUserStatus } from '@rocket.chat/core-typings';
 import Ajv from 'ajv';
 
 import type { PaginatedRequest } from '../helpers/PaginatedRequest';
@@ -36,7 +36,7 @@ const CustomUserStatusListSchema = {
 
 export const isCustomUserStatusListProps = ajv.compile<CustomUserStatusListProps>(CustomUserStatusListSchema);
 
-type CustomUserStatusCreateProps = { name: string; statusType?: UserStatus };
+type CustomUserStatusCreateProps = { name: string; statusType?: CustomizableUserStatus };
 
 const CustomUserStatusCreateSchema = {
 	type: 'object',
@@ -46,7 +46,7 @@ const CustomUserStatusCreateSchema = {
 		},
 		statusType: {
 			type: 'string',
-			enum: Object.values(UserStatus),
+			enum: Object.values(CustomizableUserStatus),
 		},
 	},
 	required: ['name'],
@@ -55,7 +55,7 @@ const CustomUserStatusCreateSchema = {
 
 export const isCustomUserStatusCreateProps = ajv.compile<CustomUserStatusCreateProps>(CustomUserStatusCreateSchema);
 
-type CustomUserStatusUpdateProps = { _id: string; name: string; statusType?: UserStatus };
+type CustomUserStatusUpdateProps = { _id: string; name: string; statusType?: CustomizableUserStatus };
 
 const CustomUserStatusUpdateSchema = {
 	type: 'object',
@@ -68,7 +68,7 @@ const CustomUserStatusUpdateSchema = {
 		},
 		statusType: {
 			type: 'string',
-			enum: Object.values(UserStatus),
+			enum: Object.values(CustomizableUserStatus),
 		},
 	},
 	required: ['_id', 'name'],
