@@ -66,7 +66,7 @@ Meteor.methods<ServerMethods>({
 		}
 
 		const validStatusTypes = Object.values(CustomizableUserStatus);
-		if (userStatusData.statusType && validStatusTypes.indexOf(userStatusData.statusType) < 0) {
+		if (userStatusData.statusType && validStatusTypes.includes(userStatusData.statusType as CustomizableUserStatus)) {
 			throw new Meteor.Error('error-input-is-not-a-valid-field', `${userStatusData.statusType} is not a valid status type`, {
 				method: 'insertOrUpdateUserStatus',
 				input: userStatusData.statusType,
