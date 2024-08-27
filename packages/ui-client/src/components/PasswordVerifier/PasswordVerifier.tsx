@@ -12,7 +12,14 @@ type PasswordVerifierProps = {
 };
 
 type PasswordVerificationProps = {
-	name: string;
+	name: `get-password-policy-${
+		| 'minLength'
+		| 'maxLength'
+		| 'forbidRepeatingCharactersCount'
+		| 'mustContainAtLeastOneLowercase'
+		| 'mustContainAtLeastOneUppercase'
+		| 'mustContainAtLeastOneNumber'
+		| 'mustContainAtLeastOneSpecialCharacter'}`;
 	isValid: boolean;
 	limit?: number;
 }[];

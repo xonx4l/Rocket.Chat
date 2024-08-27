@@ -84,9 +84,11 @@ const cjs = `module.exports = {
 
 const keys = Object.keys(JSON.parse(fs.readFileSync(`./src/locales/en.i18n.json`, 'utf8')));
 
-const tds = `export interface RocketchatI18n {
-	${keys.map((key) => `${JSON.stringify(key)}: string;`).join('\n\t')}
-}
+const tds = `import { RocketchatI18n } from './RocketchatI18n';
+
+export type * from './i18next';
+
+export { RocketchatI18n };
 
 const dict: {
 	[language: string]: RocketchatI18n;
@@ -113,10 +115,18 @@ fs.writeFileSync(
 export default languages;`,
 );
 
+fs.writeFileSync(
+	'./dist/RocketchatI18n.d.ts',
+	`export interface RocketchatI18n {
+	${keys.map((key) => `${JSON.stringify(key)}: string;`).join('\n\t')}
+}`,
+);
+
 fs.writeFileSync(`./dist/index.mjs`, esm);
 fs.writeFileSync(`./dist/index.js`, cjs);
 fs.writeFileSync(`./dist/index.d.ts`, tds);
 fs.writeFileSync(`./dist/stats.txt`, interpolationReplacementsStats());
+fs.copyFileSync('./src/i18next.d.ts', './dist/i18next.d.ts');
 
 // files.forEach((file) => {
 // 	fs.writeFileSync(

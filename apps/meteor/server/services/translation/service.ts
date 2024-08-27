@@ -1,6 +1,7 @@
 import { ServiceClassInternal } from '@rocket.chat/core-services';
 import type { ITranslationService } from '@rocket.chat/core-services';
 import type { IUser } from '@rocket.chat/core-typings';
+import type { TranslationKey } from '@rocket.chat/i18n';
 import { Settings } from '@rocket.chat/models';
 import mem from 'mem';
 
@@ -18,7 +19,7 @@ export class TranslationService extends ServiceClassInternal implements ITransla
 
 	// Use translateText when you already know the language, or want to translate to a predefined language
 	translateText(text: string, targetLanguage: string, args?: Record<string, string>): Promise<string> {
-		return Promise.resolve(i18n.t(text, { lng: targetLanguage, ...args }));
+		return Promise.resolve(i18n.t(text as TranslationKey, { lng: targetLanguage, ...args }));
 	}
 
 	// Use translate when you want to translate to the user's language, or server's as a fallback
@@ -39,7 +40,7 @@ export class TranslationService extends ServiceClassInternal implements ITransla
 
 		return keys.map((key) => ({
 			key,
-			value: i18n.t(key, { lng: language, fallbackLng: 'en' }),
+			value: i18n.t(key as TranslationKey, { lng: language, fallbackLng: 'en' }),
 		}));
 	}
 }

@@ -1,5 +1,6 @@
 import { Box, Card, CardBody, CardControls, CardTitle, FramedIcon } from '@rocket.chat/fuselage';
 import { useMediaQuery } from '@rocket.chat/fuselage-hooks';
+import type { TranslationKey } from '@rocket.chat/i18n';
 import type { ReactElement } from 'react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,8 +11,8 @@ import InfoTextIconModal from '../InfoTextIconModal';
 type FeatureSet = {
 	success?: boolean;
 	neutral?: boolean;
-	title: string;
-	infoText?: string;
+	title: TranslationKey;
+	infoText?: TranslationKey;
 };
 
 type FeaturesCardProps = {

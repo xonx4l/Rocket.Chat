@@ -1,10 +1,11 @@
 import type { IThreadMainMessage, IThreadMessage } from '@rocket.chat/core-typings';
 import { isE2EEMessage, isQuoteAttachment } from '@rocket.chat/core-typings';
 import { MessageBody } from '@rocket.chat/fuselage';
-import type { TranslationKey } from '@rocket.chat/ui-contexts';
-import { useSetting, useUserId, useTranslation } from '@rocket.chat/ui-contexts';
+import type { TranslationKey } from '@rocket.chat/i18n';
+import { useSetting, useUserId } from '@rocket.chat/ui-contexts';
 import type { ReactElement } from 'react';
 import React, { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useUserData } from '../../../../hooks/useUserData';
 import type { UserPresence } from '../../../../lib/presence';
@@ -34,7 +35,7 @@ const ThreadMessageContent = ({ message }: ThreadMessageContentProps): ReactElem
 	const messageUser: UserPresence = { ...message.u, roles: [], ...useUserData(message.u._id) };
 	const readReceiptEnabled = useSetting('Message_Read_Receipt_Enabled', false);
 
-	const t = useTranslation();
+	const { t } = useTranslation();
 
 	const normalizedMessage = useNormalizedMessage(message);
 

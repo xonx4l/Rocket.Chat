@@ -1,3 +1,4 @@
+import type { TranslationKey } from '@rocket.chat/i18n';
 import { Accounts } from 'meteor/accounts-base';
 import { Meteor } from 'meteor/meteor';
 
@@ -37,12 +38,12 @@ Accounts.registerLoginHandler('saml', async (loginRequest) => {
 		SystemLogger.error(error);
 
 		let message = error.toString();
-		let errorCode = '';
+		let errorCode: TranslationKey | undefined;
 
 		if (error instanceof Meteor.Error) {
-			errorCode = (error.error || error.message) as string;
+			errorCode = (error.error as TranslationKey) || error.message;
 		} else if (error instanceof Error) {
-			errorCode = error.message;
+			errorCode = error.message as TranslationKey;
 		}
 
 		if (errorCode) {

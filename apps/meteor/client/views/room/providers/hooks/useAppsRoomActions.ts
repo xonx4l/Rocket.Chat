@@ -1,3 +1,4 @@
+import type { TranslationKey } from '@rocket.chat/i18n';
 import { useToastMessageDispatch } from '@rocket.chat/ui-contexts';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +27,7 @@ export const useAppsRoomActions = () => {
 					icon: undefined,
 					variant: action.variant,
 					order: 300,
-					title: Utilities.getI18nKeyForApp(action.labelI18n, action.appId),
+					title: Utilities.getI18nKeyForApp(action.labelI18n, action.appId) as TranslationKey,
 					groups: ['group', 'channel', 'live', 'team', 'direct', 'direct_multiple'],
 					// Filters were applied in the applyButtonFilters function
 					// if the code made it this far, the button should be shown

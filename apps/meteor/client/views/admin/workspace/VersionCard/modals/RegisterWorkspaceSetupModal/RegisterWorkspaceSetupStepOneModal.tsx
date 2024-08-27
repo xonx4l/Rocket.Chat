@@ -93,7 +93,7 @@ const RegisterWorkspaceSetupStepOneModal = ({
 					<Field>
 						<FieldRow justifyContent='initial'>
 							<FieldLabel display='block' fontScale='c1' htmlFor={termsField}>
-								<Trans i18nKey='RegisterWorkspace_Setup_Terms_Privacy'>
+								<Trans i18nKey='cloud.RegisterWorkspace_Setup_Terms_Privacy'>
 									I agree with <ExternalLink to='https://rocket.chat/terms'>Terms and Conditions</ExternalLink> and{' '}
 									<ExternalLink to='https://rocket.chat/privacy'>Privacy Policy</ExternalLink>
 								</Trans>

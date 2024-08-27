@@ -1,6 +1,7 @@
 import type { ISetting, Serialized, SettingValue } from '@rocket.chat/core-typings';
 import type { ServerMethodName, ServerMethodParameters, ServerMethodReturn } from '@rocket.chat/ddp-client';
 import { Emitter } from '@rocket.chat/emitter';
+import type { TranslationKey as I18nTranslationKey } from '@rocket.chat/i18n';
 import languages from '@rocket.chat/i18n/dist/languages';
 import type { Method, OperationParams, OperationResult, PathPattern, UrlParams } from '@rocket.chat/rest-typings';
 import type { ModalContextValue, TranslationKey } from '@rocket.chat/ui-contexts';
@@ -17,6 +18,7 @@ import {
 } from '@rocket.chat/ui-contexts';
 import type { DecoratorFn } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import type { TOptions } from 'i18next';
 import { createInstance } from 'i18next';
 import type { ObjectId } from 'mongodb';
 import type { ContextType, JSXElementConstructor, ReactNode } from 'react';
@@ -405,7 +407,7 @@ export class MockedAppRootBuilder {
 					await i18n.changeLanguage(language);
 				},
 				translate: Object.assign(
-					(key: TranslationKey, options?: unknown) => (i18n.isInitialized ? i18n.t(key, options as { lng?: string }) : ''),
+					(key: TranslationKey, options?: unknown) => (i18n.isInitialized ? i18n.t(key as I18nTranslationKey, options as TOptions) : ''),
 					{
 						has: (key: string, options?: { lng?: string }): key is TranslationKey =>
 							!!key && i18n.isInitialized && i18n.exists(key, options),

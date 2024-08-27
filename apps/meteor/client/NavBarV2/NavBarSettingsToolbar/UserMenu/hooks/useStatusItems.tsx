@@ -1,4 +1,5 @@
 import { Box } from '@rocket.chat/fuselage';
+import type { TranslationKey } from '@rocket.chat/i18n';
 import { useEndpoint, useSetting } from '@rocket.chat/ui-contexts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
@@ -49,7 +50,7 @@ export const useStatusItems = (): GenericMenuItemProps[] => {
 		staleTime: Infinity,
 		select: (statuses) =>
 			statuses.map((status): GenericMenuItemProps => {
-				const content = status.localizeName ? t(status.name) : status.name;
+				const content = status.localizeName ? t(status.name as TranslationKey) : status.name;
 				return {
 					id: status.id,
 					status: <UserStatus status={status.statusType} />,

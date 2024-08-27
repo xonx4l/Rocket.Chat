@@ -6,7 +6,14 @@ type PasswordPolicyType = {
 };
 
 type ValidationMessageType = {
-	name: string;
+	name: `get-password-policy-${
+		| 'minLength'
+		| 'maxLength'
+		| 'forbidRepeatingCharactersCount'
+		| 'mustContainAtLeastOneLowercase'
+		| 'mustContainAtLeastOneUppercase'
+		| 'mustContainAtLeastOneNumber'
+		| 'mustContainAtLeastOneSpecialCharacter'}`;
 	isValid: boolean;
 	limit?: number;
 };
@@ -87,11 +94,7 @@ export class PasswordPolicy {
 		return false;
 	}
 
-	sendValidationMessage(password: string): {
-		name: string;
-		isValid: boolean;
-		limit?: number;
-	}[] {
+	sendValidationMessage(password: string): ValidationMessageType[] {
 		const validationReturn: ValidationMessageType[] = [];
 
 		if (!this.enabled) {

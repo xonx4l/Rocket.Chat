@@ -1,5 +1,6 @@
 import { api } from '@rocket.chat/core-services';
 import type { SlashCommandCallbackParams } from '@rocket.chat/core-typings';
+import type { TranslationKey } from '@rocket.chat/i18n';
 import { Users } from '@rocket.chat/models';
 
 import { i18n } from '../../../server/lib/i18n';
@@ -24,7 +25,7 @@ const Leave = async function Leave({ message, userId }: SlashCommandCallbackPara
 		}
 		const user = await Users.findOneById(userId);
 		void api.broadcast('notify.ephemeralMessage', userId, message.rid, {
-			msg: i18n.t(error, { lng: user?.language || settings.get('Language') || 'en' }),
+			msg: i18n.t(error as TranslationKey, { lng: user?.language || settings.get('Language') || 'en' }),
 		});
 	}
 };

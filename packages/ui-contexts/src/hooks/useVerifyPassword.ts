@@ -3,7 +3,18 @@ import { useMemo } from 'react';
 
 import { useSetting } from './useSetting';
 
-type PasswordVerifications = { isValid: boolean; limit?: number; name: string }[];
+type PasswordVerifications = {
+	isValid: boolean;
+	limit?: number;
+	name: `get-password-policy-${
+		| 'minLength'
+		| 'maxLength'
+		| 'forbidRepeatingCharactersCount'
+		| 'mustContainAtLeastOneLowercase'
+		| 'mustContainAtLeastOneUppercase'
+		| 'mustContainAtLeastOneNumber'
+		| 'mustContainAtLeastOneSpecialCharacter'}`;
+}[];
 
 export const useVerifyPassword = (password: string): PasswordVerifications => {
 	const enabled = Boolean(useSetting('Accounts_Password_Policy_Enabled'));

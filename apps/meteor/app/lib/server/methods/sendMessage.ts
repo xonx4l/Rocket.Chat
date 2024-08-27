@@ -1,6 +1,7 @@
 import { api } from '@rocket.chat/core-services';
 import type { AtLeast, IMessage, IUser } from '@rocket.chat/core-typings';
 import type { ServerMethods } from '@rocket.chat/ddp-client';
+import type { TranslationKey } from '@rocket.chat/i18n';
 import { Messages, Users } from '@rocket.chat/models';
 import { check } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
@@ -97,8 +98,8 @@ export async function executeSendMessage(uid: IUser['_id'], message: AtLeast<IMe
 	} catch (err: any) {
 		SystemLogger.error({ msg: 'Error sending message:', err });
 
-		const errorMessage = typeof err === 'string' ? err : err.error || err.message;
-		const errorContext = err.details ?? {};
+		const errorMessage: TranslationKey = typeof err === 'string' ? err : err.error || err.message;
+		const errorContext: Record<string, unknown> = err.details ?? {};
 		void api.broadcast('notify.ephemeralMessage', uid, message.rid, {
 			msg: i18n.t(errorMessage, { ...errorContext, lng: user.language }),
 		});

@@ -1,5 +1,5 @@
 import type { IMessage, MessageTypesValues } from '@rocket.chat/core-typings';
-import type { TranslationKey } from '@rocket.chat/ui-contexts';
+import type { TranslationKey } from '@rocket.chat/i18n';
 
 export type MessageType = {
 	id: MessageTypesValues;

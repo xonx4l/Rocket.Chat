@@ -1,5 +1,6 @@
 import { api } from '@rocket.chat/core-services';
 import type { IUser, SlashCommandCallbackParams } from '@rocket.chat/core-typings';
+import type { TranslationKey } from '@rocket.chat/i18n';
 import { Subscriptions, Users } from '@rocket.chat/models';
 import { Meteor } from 'meteor/meteor';
 
@@ -87,7 +88,7 @@ slashCommands.add({
 						});
 					} else {
 						void api.broadcast('notify.ephemeralMessage', userId, message.rid, {
-							msg: i18n.t(error, { lng: settings.get('Language') || 'en' }),
+							msg: i18n.t(error as TranslationKey, { lng: settings.get('Language') || 'en' }),
 						});
 					}
 				}

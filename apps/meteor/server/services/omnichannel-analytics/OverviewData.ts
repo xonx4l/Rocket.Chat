@@ -1,6 +1,8 @@
 /* eslint-disable new-cap */
 import type { IOmnichannelRoom } from '@rocket.chat/core-typings';
+import type { TranslationKey } from '@rocket.chat/i18n';
 import type { ILivechatRoomsModel } from '@rocket.chat/model-typings';
+import type { TFunction } from 'i18next';
 import moment from 'moment-timezone';
 import type { Filter } from 'mongodb';
 
@@ -20,7 +22,7 @@ export class OverviewData {
 
 	callAction<T extends OverviewDataValidActions>(
 		action: T,
-		...args: [moment.Moment, moment.Moment, string?, string?, ((v: string) => string)?, Filter<IOmnichannelRoom>?]
+		...args: [moment.Moment, moment.Moment, string?, string?, TFunction?, Filter<IOmnichannelRoom>?]
 	) {
 		switch (action) {
 			case 'Conversations':
@@ -86,7 +88,7 @@ export class OverviewData {
 		to: moment.Moment,
 		departmentId?: string,
 		timezone = 'UTC',
-		t = (v: string): string => v,
+		_t = (v: TranslationKey): string => v,
 		extraQuery: Filter<IOmnichannelRoom> = {},
 	) {
 		const analyticsMap = new Map();
@@ -153,7 +155,7 @@ export class OverviewData {
 			},
 			{
 				title: 'Busiest_day',
-				value: t(busiestDay) || '-',
+				value: busiestDay || '-',
 			},
 			{
 				title: 'Conversations_per_day',
@@ -171,7 +173,7 @@ export class OverviewData {
 		to: moment.Moment,
 		departmentId?: string,
 		_timezone?: string,
-		_t = (v: string): string => v,
+		_t = (v: TranslationKey): string => v,
 		extraQuery?: Filter<IOmnichannelRoom>,
 	) {
 		let avgResponseTime = 0;

@@ -1,4 +1,5 @@
 import type { IUser } from '@rocket.chat/core-typings';
+import type { TranslationKey } from '@rocket.chat/i18n';
 import { Users } from '@rocket.chat/models';
 
 import { i18n } from '../../../../server/lib/i18n';
@@ -20,15 +21,13 @@ const getMessagesToSendToAdmins = async (
 	adminUser: IUser,
 ): Promise<{ msg: string }[]> => {
 	const msgs = [];
+	const t = adminUser.language ? i18n.getFixedT(adminUser.language) : i18n.t.bind(i18n);
 	for await (const alert of alerts) {
 		if (!(await Users.bannerExistsById(adminUser._id, `alert-${alert.id}`))) {
 			continue;
 		}
 		msgs.push({
-			msg: `*${i18n.t('Rocket_Chat_Alert', { ...(adminUser.language && { lng: adminUser.language }) })}:*\n\n*${i18n.t(alert.title, {
-				...(adminUser.language && { lng: adminUser.language }),
-			})}*\n${i18n.t(alert.text, {
-				...(adminUser.language && { lng: adminUser.language }),
+			msg: `*${t('Rocket_Chat_Alert')}:*\n\n*${t(alert.title as TranslationKey)}*\n${t(alert.text as TranslationKey, {
 				...(Array.isArray(alert.textArguments) && {
 					postProcess: 'sprintf',
 					sprintf: alert.textArguments,
@@ -79,3 +78,4 @@ const showAlertsFromCloud = async (
 		})),
 	});
 };
+//

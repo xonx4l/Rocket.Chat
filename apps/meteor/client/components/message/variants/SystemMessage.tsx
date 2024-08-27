@@ -11,11 +11,12 @@ import {
 	MessageUsername,
 	MessageNameContainer,
 } from '@rocket.chat/fuselage';
+import type { TranslationKey } from '@rocket.chat/i18n';
 import { UserAvatar } from '@rocket.chat/ui-avatar';
-import type { TranslationKey } from '@rocket.chat/ui-contexts';
-import { useTranslation } from '@rocket.chat/ui-contexts';
+import type { TOptions } from 'i18next';
 import type { ComponentProps, ReactElement, KeyboardEvent } from 'react';
 import React, { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { MessageTypes } from '../../../../app/ui-utils/client';
 import { getUserDisplayName } from '../../../../lib/getUserDisplayName';
@@ -40,7 +41,7 @@ type SystemMessageProps = {
 } & ComponentProps<typeof MessageSystem>;
 
 const SystemMessage = ({ message, showUserAvatar, ...props }: SystemMessageProps): ReactElement => {
-	const t = useTranslation();
+	const { t } = useTranslation();
 	const formatTime = useFormatTime();
 	const formatDateAndTime = useFormatDateAndTime();
 	const { triggerProps, openUserCard } = useUserCard();
@@ -95,7 +96,7 @@ const SystemMessage = ({ message, showUserAvatar, ...props }: SystemMessageProps
 					</MessageNameContainer>
 					{messageType && (
 						<MessageSystemBody data-qa-type='system-message-body'>
-							{t(messageType.message, messageType.data ? messageType.data(message) : {})}
+							{t(messageType.message, messageType.data ? (messageType.data(message) as TOptions) : {})}
 						</MessageSystemBody>
 					)}
 					<MessageSystemTimestamp title={formatDateAndTime(message.ts)}>{formatTime(message.ts)}</MessageSystemTimestamp>

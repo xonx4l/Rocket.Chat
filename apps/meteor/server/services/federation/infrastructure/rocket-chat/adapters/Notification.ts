@@ -1,4 +1,5 @@
 import { api } from '@rocket.chat/core-services';
+import type { TranslationKey } from '@rocket.chat/i18n';
 import { Rooms } from '@rocket.chat/models';
 
 import notifications from '../../../../../../app/notifications/server/lib/Notifications';
@@ -36,7 +37,7 @@ export class RocketChatNotificationAdapter {
 		});
 	}
 
-	public notifyWithEphemeralMessage(i18nMessageKey: string, userId: string, roomId: string, language = 'en'): void {
+	public notifyWithEphemeralMessage(i18nMessageKey: TranslationKey, userId: string, roomId: string, language = 'en'): void {
 		void api.broadcast('notify.ephemeralMessage', userId, roomId, {
 			msg: i18n.t(i18nMessageKey, {
 				postProcess: 'sprintf',
