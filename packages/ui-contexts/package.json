@@ -14,6 +14,7 @@
 		"@types/use-sync-external-store": "^0.0.5",
 		"eslint": "~8.45.0",
 		"eslint-plugin-react-hooks": "^4.6.0",
+		"i18next": "~23.14.0",
 		"mongodb": "^4.17.2",
 		"react": "~17.0.2",
 		"typescript": "~5.3.3",
@@ -26,6 +27,7 @@
 		"@rocket.chat/fuselage-hooks": "*",
 		"@rocket.chat/i18n": "workspace:~",
 		"@rocket.chat/rest-typings": "workspace:^",
+		"i18next": "*",
 		"react": "~17.0.2",
 		"use-sync-external-store": "^1.2.0"
 	},
