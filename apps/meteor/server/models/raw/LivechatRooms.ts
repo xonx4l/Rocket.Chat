@@ -10,8 +10,8 @@ import type {
 	MACStats,
 	IStats,
 } from '@rocket.chat/core-typings';
-import type { ILivechatRoomsModel } from '@rocket.chat/model-typings';
 import { UserStatus, LivechatPriorityWeight } from '@rocket.chat/core-typings';
+import type { ILivechatRoomsModel } from '@rocket.chat/model-typings';
 import type { Updater } from '@rocket.chat/models';
 import { Settings } from '@rocket.chat/models';
 import { escapeRegExp } from '@rocket.chat/string-helpers';
