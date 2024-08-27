@@ -42,7 +42,7 @@ const MeetRoute = () => {
 			},
 			onError: (error) => {
 				if (error instanceof VisitorDoesNotExistError) {
-					dispatchToastMessage({ type: 'error', message: t('core.Visitor_does_not_exist') });
+					dispatchToastMessage({ type: 'error', message: t('Visitor_does_not_exist') });
 					router.navigate('/home');
 					return;
 				}

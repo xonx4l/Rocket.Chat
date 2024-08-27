@@ -16,7 +16,7 @@ const ErrorPage = ({ error }: ErrorPageProps) => {
 		<Layout>
 			<States>
 				<StatesIcon name='warning' variation='danger' />
-				<StatesTitle>{t('core.Error')}</StatesTitle>
+				<StatesTitle>{t('Error')}</StatesTitle>
 				<StatesSubtitle>{getErrorMessage(error)}</StatesSubtitle>
 			</States>
 		</Layout>

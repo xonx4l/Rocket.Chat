@@ -54,20 +54,20 @@ const AuthorizationFormPage = ({ oauthApp, redirectUri, user }: AuthorizationFor
 		<Layout>
 			<Form method='post' action='' aria-labelledby={formLabelId}>
 				<Form.Header>
-					<Form.Title id={formLabelId}>{t('core.Authorize_access_to_your_account')}</Form.Title>
+					<Form.Title id={formLabelId}>{t('Authorize_access_to_your_account')}</Form.Title>
 				</Form.Header>
 				<Form.Container>
 					<Box withRichContent>
 						<CurrentUserDisplay user={user} />
 
 						<p>
-							<Trans i18nKey='core.The_application_will_be_able_to' t={t}>
+							<Trans i18nKey='The_application_will_be_able_to' t={t}>
 								The application <strong>{{ appName: oauthApp.name }}</strong> will be able to:
 							</Trans>
 						</p>
 
 						<ul>
-							<li>{t('core.access_your_basic_information')}</li>
+							<li>{t('access_your_basic_information')}</li>
 						</ul>
 					</Box>
 					<input type='hidden' name='access_token' value={token} />
@@ -78,11 +78,11 @@ const AuthorizationFormPage = ({ oauthApp, redirectUri, user }: AuthorizationFor
 				<Form.Footer>
 					<ButtonGroup stretch>
 						<Button ref={submitRef} type='submit' primary name='allow' value='yes'>
-							{t('core.Authorize')}
+							{t('Authorize')}
 						</Button>
-						<Button onClick={handleCancelButtonClick}>{t('core.Cancel')}</Button>
+						<Button onClick={handleCancelButtonClick}>{t('Cancel')}</Button>
 						<Button danger onClick={handleLogoutButtonClick}>
-							{t('core.Logout')}
+							{t('Logout')}
 						</Button>
 					</ButtonGroup>
 				</Form.Footer>

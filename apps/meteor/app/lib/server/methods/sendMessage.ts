@@ -100,7 +100,7 @@ export async function executeSendMessage(uid: IUser['_id'], message: AtLeast<IMe
 		const errorMessage = typeof err === 'string' ? err : err.error || err.message;
 		const errorContext = err.details ?? {};
 		void api.broadcast('notify.ephemeralMessage', uid, message.rid, {
-			msg: i18n.t(errorMessage, errorContext, user.language),
+			msg: i18n.t(errorMessage, { ...errorContext, lng: user.language }),
 		});
 
 		if (typeof err === 'string') {

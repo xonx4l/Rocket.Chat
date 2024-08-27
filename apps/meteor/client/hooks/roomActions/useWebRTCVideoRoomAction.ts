@@ -35,7 +35,7 @@ export const useWebRTCVideoRoomAction = () => {
 			title: 'WebRTC_Call',
 			icon: 'phone',
 			...(federated && {
-				tooltip: t('core.Call_unavailable_for_federation'),
+				tooltip: t('Call_unavailable_for_federation'),
 				disabled: true,
 			}),
 			action: () => void handleClick(),

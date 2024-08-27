@@ -55,7 +55,7 @@ const RoomOpener = ({ type, reference }: RoomOpenerProps): ReactElement => {
 							body={
 								<States>
 									<StatesIcon name='circle-exclamation' variation='danger' />
-									<StatesTitle>{t('core.Error')}</StatesTitle>
+									<StatesTitle>{t('Error')}</StatesTitle>
 									<StatesSubtitle>{getErrorMessage(error)}</StatesSubtitle>
 								</States>
 							}

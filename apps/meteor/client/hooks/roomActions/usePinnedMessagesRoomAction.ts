@@ -26,7 +26,7 @@ export const usePinnedMessagesRoomAction = () => {
 			icon: 'pin',
 			tabComponent: PinnedMessagesTab,
 			...(federated && {
-				tooltip: t('core.Pinned_messages_unavailable_for_federation'),
+				tooltip: t('Pinned_messages_unavailable_for_federation'),
 				disabled: true,
 			}),
 			order: 9,

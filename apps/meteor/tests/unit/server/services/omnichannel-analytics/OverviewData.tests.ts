@@ -52,7 +52,7 @@ describe('OverviewData Analytics', () => {
 			await overview.callAction('Conversations', moment(), moment(), '', 'UTC');
 			expect(spy.calledOnce).to.be.true;
 
-			await overview.callAction('Productivity', moment(), moment(), '', 'UTC', (v: string): string => v);
+			await overview.callAction('Productivity', moment(), moment(), '', 'UTC');
 			expect(spy2.calledOnce).to.be.true;
 		});
 	});

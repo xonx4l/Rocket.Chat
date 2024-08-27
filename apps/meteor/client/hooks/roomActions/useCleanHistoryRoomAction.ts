@@ -26,7 +26,7 @@ export const useCleanHistoryRoomAction = () => {
 			title: 'Prune_Messages',
 			icon: 'eraser',
 			...(federated && {
-				tooltip: t('core.Clean_History_unavailable_for_federation'),
+				tooltip: t('Clean_History_unavailable_for_federation'),
 				disabled: true,
 			}),
 			tabComponent: PruneMessages,

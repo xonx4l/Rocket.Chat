@@ -28,7 +28,7 @@ export const useDiscussionsRoomAction = () => {
 			full: true,
 			...(federated && {
 				disabled: true,
-				tooltip: t('core.Discussions_unavailable_for_federation'),
+				tooltip: t('Discussions_unavailable_for_federation'),
 			}),
 			order: 3,
 		};

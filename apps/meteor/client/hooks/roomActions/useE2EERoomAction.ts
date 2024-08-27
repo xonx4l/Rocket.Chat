@@ -68,7 +68,7 @@ export const useE2EERoomAction = () => {
 			action,
 			type: 'organization',
 			...(federated && {
-				tooltip: t('core.E2E_unavailable_for_federation'),
+				tooltip: t('E2E_unavailable_for_federation'),
 				disabled: true,
 			}),
 		};

@@ -76,7 +76,7 @@ export const useStartCallRoomAction = () => {
 			icon: 'phone',
 			action: () => void handleOpenVideoConf(),
 			...(disabled && {
-				tooltip: t('core.Video_Call_unavailable_for_this_type_of_room'),
+				tooltip: t('Video_Call_unavailable_for_this_type_of_room'),
 				disabled: true,
 			}),
 			full: true,

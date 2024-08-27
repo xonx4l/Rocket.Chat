@@ -30,7 +30,7 @@ export const useOTRRoomAction = () => {
 			full: true,
 			type: 'communication',
 			...(federated && {
-				tooltip: t('core.OTR_unavailable_for_federation'),
+				tooltip: t('OTR_unavailable_for_federation'),
 				disabled: true,
 			}),
 		};

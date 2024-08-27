@@ -19,7 +19,7 @@ const enterpriseModules = [
 	'oauth-enterprise',
 	'custom-roles',
 	'auditing',
-];
+] as const;
 
 const UpgradeToGetMore = ({ activeModules, children }: UpgradeToGetMoreProps) => {
 	const { t } = useTranslation();

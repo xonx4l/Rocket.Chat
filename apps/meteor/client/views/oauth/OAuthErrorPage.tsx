@@ -10,11 +10,11 @@ const OAuthErrorPage = () => {
 
 	switch (errorType) {
 		case '404':
-			return <ErrorPage error={t('core.Invalid_OAuth_client')} />;
+			return <ErrorPage error={t('Invalid_OAuth_client')} />;
 		case 'invalid_redirect_uri':
-			return <ErrorPage error={t('core.Redirect_URL_does_not_match')} />;
+			return <ErrorPage error={t('Redirect_URL_does_not_match')} />;
 		default:
-			return <ErrorPage error={t('core.Error_something_went_wrong')} />;
+			return <ErrorPage error={t('Error_something_went_wrong')} />;
 	}
 };
 

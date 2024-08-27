@@ -25,7 +25,7 @@ export const useCallsRoomAction = () => {
 			icon: 'phone',
 			title: 'Calls',
 			...(federated && {
-				tooltip: t('core.Video_Call_unavailable_for_this_type_of_room'),
+				tooltip: t('Video_Call_unavailable_for_this_type_of_room'),
 				disabled: true,
 			}),
 			tabComponent: VideoConfList,
