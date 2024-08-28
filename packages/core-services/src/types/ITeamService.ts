@@ -132,5 +132,5 @@ export interface ITeamService {
 		sort?: Record<string, 1 | -1>,
 		skip?: number,
 		limit?: number,
-	): Promise<{ total: number; data: IRoom[] }>
+	): Promise<{ total: number; data: IRoom[] }>;
 }
