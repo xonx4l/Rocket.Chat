@@ -1081,11 +1081,15 @@ export class TeamService extends ServiceClassInternal implements ITeamService {
 			.map(({ rid }) => rid)
 			.toArray();
 
-		const { cursor, totalCount }= Rooms.findPaginatedByNameOrFnameInIds([...new Set([mainRoom._id, ...roomIds, ...discussionIds, ...teamPublicIds])], filter, {
-			skip,
-			limit,
-			sort,
-		});
+		const { cursor, totalCount } = Rooms.findPaginatedByNameOrFnameInIds(
+			[...new Set([mainRoom._id, ...roomIds, ...discussionIds, ...teamPublicIds])],
+			filter,
+			{
+				skip,
+				limit,
+				sort,
+			},
+		);
 
 		const [data, total] = await Promise.all([cursor.toArray(), totalCount]);
 
