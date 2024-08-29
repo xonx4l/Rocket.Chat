@@ -175,7 +175,7 @@ type ChainedCallbackSignatures = {
 	'livechat.applySimultaneousChatRestrictions': (_: undefined, params: { departmentId?: ILivechatDepartmentRecord['_id'] }) => undefined;
 	'livechat.beforeDelegateAgent': (
 		agent: SelectedAgent | undefined,
-		params?: { department?: string; departmentAgents?: ILivechatDepartmentAgents[] },
+		params?: { department?: string; agents?: ILivechatDepartmentAgents[] },
 	) => SelectedAgent | null | undefined;
 	'livechat.applyDepartmentRestrictions': (
 		query: FilterOperators<ILivechatDepartmentRecord>,
